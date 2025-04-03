@@ -75,7 +75,6 @@ def get_destination():
 global player_turn
 player_turn = 0
 def show_info():
-    
     print(player_tiles[player_turn])        
 def show_move():
     print(origin, destination)
