@@ -8,8 +8,7 @@ for i in range(16):
 for i in range(len(board)):
     for f in range(16):
         board[i].append([])
-for i in board:
-    print(i)
+
 def random_tile():
         global tile_list
         return tile_list[randint(1,len(tile_list)-1)]
@@ -86,6 +85,15 @@ global player_turn
 player_turn = 0
 def show_info():
     print(f"Player {player_turn }'s turn!")
+    print(f"Current board: ")
+    temp_board = board
+    for i in range(len(board)):
+        for f in range(len(board[i])):
+            temp_board.append(f"[]")
+
+    for i in temp_board:
+        print(i)
+        
     print(f"Player {player_turn }'s tiles: ")
     list_position_temp = 1
     for i in player_tiles[player_turn ]:
@@ -94,9 +102,10 @@ def show_info():
     print(" ")
 def show_move():
     player_tiles[player_turn]
-    tile = board[str(origin+1)]
-    print(f"Tile {tile} moved from {origin} to {destination}.")
-    
+    tile = player_tiles[player_turn][int(origin)-1]
+    print(f"Tile {tile} moved from {origin} to {destination.upper()}.")
+
+   
 
 
 
