@@ -92,6 +92,7 @@ def player_move():
     show_info()
     get_move()
     show_move()
+    global player_turn
     player_turn += 1
 
 
@@ -142,3 +143,4 @@ for i in range(num_players):
 
 player_tiles = draw_tiles()           
 player_move()      
+
