@@ -89,7 +89,9 @@ def show_info():
     temp_board = board
     for i in range(len(board)):
         for f in range(len(board[i])):
-            temp_board.append(f"[]")
+            print(board[i])
+            print(board[f])
+            temp_board += board[i][f]
 
     for i in temp_board:
         print(i)
