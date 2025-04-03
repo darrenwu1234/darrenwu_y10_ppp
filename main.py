@@ -1,5 +1,6 @@
 from collections import Counter
 from random import randint
+
 def random_tile():
         global tile_list
         return tile_list[randint(1,len(tile_list)-1)]
