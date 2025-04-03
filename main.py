@@ -72,8 +72,11 @@ def get_destination():
 
         destination = input("Please enter where you want to place your tile") 
     return destination
+global player_turn
+player_turn = 0
 def show_info():
-    print(player_tiles)        
+    
+    print(player_tiles[player_turn])        
 def show_move():
     print(origin, destination)
 
@@ -128,7 +131,6 @@ player_tiles = []
 for i in range(num_players):
     player_tiles.append([])
 
-player_turn = 1
 
 
 
