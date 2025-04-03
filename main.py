@@ -86,7 +86,8 @@ player_turn = 0
 def show_info():
     print(f"Player {player_turn }'s turn!")
     print(f"Current board: ")
-    temp_board = board
+    
+    print(board)
     for i in range(16):
         for f in range(16):
             
