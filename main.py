@@ -32,7 +32,7 @@ def get_origin():
 
   
 
-    if move_type == 1:
+    if move_type == "1":
         origin = input("Enter the position where you want to draw your tile from: ")
 
         while origin not in ["1","2","3","4","5","6","7"]: 
@@ -45,7 +45,7 @@ def get_origin():
 
         
 
-    elif move_type == 2:
+    elif move_type == "2":
         origin = input("Enter the position where you want to draw your tile from: ") 
         while origin[0].lower() not in ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"] or origin[1] not in ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"]:
 
