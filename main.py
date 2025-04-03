@@ -2,14 +2,14 @@ from collections import Counter
 from random import randint
 value_dict = {"A" : 1, "B": 3, "C": 3, "D" : 2, "E": 1, "F": 4,"G": 2,"H": 4, "I": 1, "J": 8, "K": 5, "L": 1,"M": 3, "N": 1, "O": 1, "P": 3, "Q": 10, "R": 1, "S": 1, "T": 1, "U": 1, "V": 4, "W": 4, "X": 8, "Y": 4, "Z": 10}
 board = []
-for i in range(15):
+for i in range(16):
     
     board.append([])
 for i in range(len(board)):
-    for f in range(15):
+    for f in range(16):
         board[i].append([])
-for i in range(len(board)):
-    print(board)
+for i in board:
+    print(i)
 def random_tile():
         global tile_list
         return tile_list[randint(1,len(tile_list)-1)]
@@ -85,15 +85,20 @@ def get_destination():
 global player_turn
 player_turn = 0
 def show_info():
-    print(f"Player {player_turn % 3}'s turn!")
-    print(f"Player {player_turn % 3}'s tiles: ")
+    print(f"Player {player_turn }'s turn!")
+    print(f"Player {player_turn }'s tiles: ")
     list_position_temp = 1
-    for i in player_tiles[player_turn % 3]:
+    for i in player_tiles[player_turn ]:
         print(str(list_position_temp) + i, end = " ")      
         list_position_temp += 1 
     print(" ")
 def show_move():
-    print(origin, destination)
+    player_tiles[player_turn]
+    tile = board[str(origin+1)]
+    print(f"Tile {tile} moved from {origin} to {destination}.")
+    
+
+
 
 
     
@@ -105,6 +110,9 @@ def player_move():
     show_move()
     global player_turn
     player_turn += 1
+    if player_turn == 3:
+        player_turn = 0
+        
 
 
 
