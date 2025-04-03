@@ -87,16 +87,10 @@ def show_info():
     print(f"Player {player_turn }'s turn!")
     print(f"Current board: ")
     
-    print(board)
-    for i in range(16):
-        for f in range(16):
-            
-            pass
-            #temp_board += str(board[i][f])
-        #temp_board += "\n"
 
-    #print(temp_board)
-        
+    for i in range(len(board)):
+        print("".join(board[i]))
+            
     print(f"Player {player_turn }'s tiles: ")
     list_position_temp = 1
     for i in player_tiles[player_turn ]:
