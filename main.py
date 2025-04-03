@@ -47,7 +47,7 @@ def get_origin():
 
     elif move_type == "2":
         origin = input("Enter the position where you want to draw your tile from: ") 
-        while origin[0].lower() not in ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"] or origin[1] not in ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"]:
+        while origin[0].upper() not in ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"] or origin[1] not in ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"]:
 
             print("Not a valid position, please enter a number 1-7")
             origin = input("Enter the position where you want to draw your tile from: ") 
@@ -81,6 +81,7 @@ def show_info():
     for i in player_tiles[player_turn % 3]:
         print(str(list_position_temp) + i, end = " ")      
         list_position_temp += 1 
+    print(" ")
 def show_move():
     print(origin, destination)
 
