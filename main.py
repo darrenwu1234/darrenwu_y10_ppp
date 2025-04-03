@@ -89,12 +89,12 @@ def show_info():
     temp_board = board
     for i in range(len(board)):
         for f in range(len(board[i])):
-            print(board[i])
-            print(board[f])
-            temp_board += board[i][f]
+            
+            
+            temp_board += str(board[i][f])
+        temp_board += "\n"
 
-    for i in temp_board:
-        print(i)
+    print(temp_board)
         
     print(f"Player {player_turn }'s tiles: ")
     list_position_temp = 1
