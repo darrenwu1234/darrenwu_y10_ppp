@@ -73,12 +73,19 @@ def get_destination():
         destination = input("Please enter where you want to place your tile") 
     return destination
         
-
+def show_move():
+    print(origin, destination)
+def show_info():
+    print(tile_list)
     
     
     
 def player_move():
+    show_info()
     get_move()
+    show_move()
+
+
 
 
 
@@ -126,5 +133,4 @@ player_turn = 1
 
 
 player_tiles = draw_tiles()           
-get_move()       
-print(origin, destination)
+player_move()      
