@@ -76,7 +76,7 @@ def get_destination():
 def show_move():
     print(origin, destination)
 def show_info():
-    print(tile_list)
+    print(player_tiles)
     
     
     
