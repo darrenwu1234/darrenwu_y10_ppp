@@ -117,7 +117,7 @@ def show_move():
 
 def update_board():
     global board
-    
+    global destination
     row_num = origin
     destination = destination.upper()
     column_num = chr(destination)+64
