@@ -120,7 +120,8 @@ def update_board():
     
     row_num = origin
     destination = destination.upper()
-    
+    column_num = chr(destination)+64
+    print(row_num,column_num)
     
     
     
