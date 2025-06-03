@@ -97,6 +97,8 @@ def show_info():
         
         print(row_char + "".join(board[i]))
         row_num += 1
+        show_board()
+def show_board():
     print(f"Player {player_turn }'s tiles: ")
     print("1   2   3   4   5   6   7")
     for i in player_tiles[player_turn ]:
@@ -109,13 +111,14 @@ def show_move():
     player_tiles[player_turn]
     tile = player_tiles[player_turn][int(origin)-1]
     print(f"Tile {tile} moved from {origin} to {destination.upper()}.")
+    return tile
 
 
    
 
 
 
-def update_board():
+def update_board(tile):
     global board
     global destination
     
@@ -123,14 +126,14 @@ def update_board():
     column_num = destination[0]
     column_num = ord(column_num) - 64
     board[row_num][column_num] = tile
-    
+
     
     
 def player_move():
     show_info()
     get_move()
-    show_move()
-    update_board()
+    tile = show_move()
+    update_board(tile)
     global player_turn
     player_turn += 1
     if player_turn == 3:
