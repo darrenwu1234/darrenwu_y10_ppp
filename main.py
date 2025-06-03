@@ -24,7 +24,7 @@ def draw_tiles():
 def get_move_type(): 
     move_type_valid = False
     while move_type_valid == False:
-        move_type = input("What move type do you want? \n Enter 1 to move a tile on your rack to the board \n Enter 2 to move a tile on the board to a different square on the board")
+        move_type = input("What move type do you want? \n Enter 1 to move a tile on your rack to the board \n Enter 2 to move a tile on the rack to a different square on the rack")
         if move_type != "1" and move_type != "2":
             print("Invalid input, please enter either 1 or 2: ")
         else:
@@ -121,7 +121,7 @@ def update_board():
     
     row_num = destination[1]
     column_num = destination[0]
-    column_num = ord(column_num) + 64
+    column_num = ord(column_num) - 64
     print(row_num, column_num)
     
     
