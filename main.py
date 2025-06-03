@@ -7,7 +7,7 @@ for i in range(16):
     board.append([])
 for i in range(len(board)):
     for f in range(16):
-        board[i].append("[]")
+        board[i].append("[ ]")
 
 def random_tile():
         global tile_list
@@ -86,11 +86,17 @@ player_turn = 0
 def show_info():
     print(f"Player {player_turn }'s turn!")
     print(f"Current board: ")
+    row_num = 1
+    print("   A   B   C   D   E   F   G   H   I   J   K   L   M   N   O   P")
     
-
     for i in range(len(board)):
+        if row_num < 10:
+            row_char = "",str(row_num)
+        else:
+            row_char = str(row_num)
+        print(row_char)
         print("".join(board[i]))
-            
+        row_num += 1
     print(f"Player {player_turn }'s tiles: ")
     list_position_temp = 1
     for i in player_tiles[player_turn ]:
