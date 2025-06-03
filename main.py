@@ -104,6 +104,7 @@ def show_info():
         print(i, end = "  ")      
         list_position_temp += 1 
     print(" ")
+    #hello
 def show_move():
     player_tiles[player_turn]
     tile = player_tiles[player_turn][int(origin)-1]
