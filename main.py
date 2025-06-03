@@ -118,11 +118,11 @@ def show_move():
 def update_board():
     global board
     global destination
-    row_num = origin
-    destination = destination.upper()
-    column_num = ord(destination) + 64
-    print(row_num,column_num)
     
+    row_num = destination[1]
+    column_num = destination[0]
+    column_num = ord(column_num) + 64
+    print(row_num, column_num)
     
     
 def player_move():
