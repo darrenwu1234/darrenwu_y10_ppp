@@ -100,7 +100,8 @@ def show_info():
     print(f"Player {player_turn }'s tiles: ")
     list_position_temp = 1
     for i in player_tiles[player_turn ]:
-        print(str(list_position_temp) + i, end = " ")      
+        print(str(list_position_temp), end = " ")
+        print(i, end = "  ")      
         list_position_temp += 1 
     print(" ")
 def show_move():
