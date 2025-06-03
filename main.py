@@ -120,7 +120,7 @@ def update_board():
     global destination
     row_num = origin
     destination = destination.upper()
-    column_num = chr(destination)+64
+    column_num = ord(destination) + 64
     print(row_num,column_num)
     
     
