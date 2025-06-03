@@ -98,13 +98,13 @@ def show_info():
         print(row_char + "".join(board[i]))
         row_num += 1
     print(f"Player {player_turn }'s tiles: ")
-    list_position_temp = 1
+    print("1   2   3   4   5   6   7")
     for i in player_tiles[player_turn ]:
-        print(str(list_position_temp), end = " ")
-        print(i, end = "  ")      
-        list_position_temp += 1 
-    print(" ")
-    #hello
+        
+        print(i, end = "   ")      
+        
+
+    
 def show_move():
     player_tiles[player_turn]
     tile = player_tiles[player_turn][int(origin)-1]
