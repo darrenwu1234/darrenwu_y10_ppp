@@ -102,7 +102,7 @@ def show_info():
     for i in player_tiles[player_turn ]:
         
         print(i, end = "   ")      
-        
+    print("")
 
     
 def show_move():
@@ -110,11 +110,17 @@ def show_move():
     tile = player_tiles[player_turn][int(origin)-1]
     print(f"Tile {tile} moved from {origin} to {destination.upper()}.")
 
+
    
 
 
 
-
+def update_board():
+    global board
+    
+    row_num = origin
+    destination = destination.upper()
+    
     
     
     
@@ -122,6 +128,7 @@ def player_move():
     show_info()
     get_move()
     show_move()
+    update_board()
     global player_turn
     player_turn += 1
     if player_turn == 3:
