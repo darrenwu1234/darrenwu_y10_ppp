@@ -122,7 +122,8 @@ def update_board():
     row_num = destination[1]
     column_num = destination[0]
     column_num = ord(column_num) - 64
-    print(row_num, column_num)
+    board[row_num][column_num] = tile
+    
     
     
 def player_move():
