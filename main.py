@@ -103,7 +103,7 @@ def show_board():
     print("1   2   3   4   5   6   7")
     for i in player_tiles[player_turn ]:
         
-        print(i, end = "   ")      
+        print(i, end = "   ")       
     print("")
 
     
