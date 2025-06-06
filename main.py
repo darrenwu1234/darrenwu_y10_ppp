@@ -86,7 +86,7 @@ player_turn = 0
 def show_info():
     print(f"Player {player_turn }'s turn!")
     show_board()
-    
+
 def show_board():
     print(row_char + "".join(board[i]))
     row_num += 1
@@ -98,7 +98,8 @@ def show_board():
                 row_char = " " + str(row_num)
             else:
                 row_char = str(row_num)
-            
+            print(row_char + "".join(board[i]))
+            row_num += 1
     
 def show_move():
     player_tiles[player_turn]
