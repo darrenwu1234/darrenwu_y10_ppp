@@ -127,7 +127,7 @@ def update_board(tile):
     row_num = int(destination[1]) - 1
     column_num = destination[0]
     column_num = ord(column_num.upper()) - 65
-    board[row_num][column_num][1] = tile
+    board[row_num][column_num] = "[" + tile + "]"
     print(tile)
     print(row_num)
     print(column_num)
