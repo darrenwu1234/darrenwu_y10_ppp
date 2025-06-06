@@ -83,9 +83,17 @@ def get_destination():
     return destination
 global player_turn
 player_turn = 0
+def show_tiles():
+    print(f"Player {player_turn }'s tiles: ")
+    print("1   2   3   4   5   6   7")
+    for i in player_tiles[player_turn % 3]:
+
+        print(i, end = "   ")      
+    print("")
 def show_info():
     print(f"Player {player_turn }'s turn!")
     show_board()
+    show_tiles()
 
 def show_board():
    
