@@ -85,27 +85,22 @@ global player_turn
 player_turn = 0
 def show_info():
     print(f"Player {player_turn }'s turn!")
+    
+    
+   
+    show_board()
+def show_board():
+    print(row_char + "".join(board[i]))
+    row_num += 1
     print(f"Current board: ")
     row_num = 1
     print("   A  B  C  D  E  F  G  H  I  J  K  L  M  N  O  P")
-    
     for i in range(len(board)):
-        if row_num < 10:
-            row_char = " " + str(row_num)
-        else:
-            row_char = str(row_num)
-        
-        print(row_char + "".join(board[i]))
-        row_num += 1
-        show_board()
-def show_board():
-    print(f"Player {player_turn }'s tiles: ")
-    print("1   2   3   4   5   6   7")
-    for i in player_tiles[player_turn ]:
-        
-        print(i, end = "   ")       
-    print("")
-
+            if row_num < 10:
+                row_char = " " + str(row_num)
+            else:
+                row_char = str(row_num)
+            
     
 def show_move():
     player_tiles[player_turn]
@@ -126,7 +121,7 @@ def update_board(tile):
     column_num = destination[0]
     column_num = ord(column_num) - 64
     board[row_num][column_num] = tile
-    show_board()
+    
 
     
     
@@ -135,6 +130,7 @@ def player_move():
     get_move()
     tile = show_move()
     update_board(tile)
+    show_board
     global player_turn
     player_turn += 1
     if player_turn == 3:
