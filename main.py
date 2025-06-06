@@ -94,12 +94,12 @@ def show_board():
     row_num = 1
     print("   A  B  C  D  E  F  G  H  I  J  K  L  M  N  O  P")
     for i in range(len(board)):
-            if row_num < 10:
-                row_char = " " + str(row_num)
-            else:
-                row_char = str(row_num)
-            print(row_char + "".join(board[i]))
-            row_num += 1
+        if row_num < 10:
+            row_char = " " + str(row_num)
+        else:
+            row_char = str(row_num)
+        print(row_char + "".join(board[i]))
+        row_num += 1
     
 def show_move():
     player_tiles[player_turn]
