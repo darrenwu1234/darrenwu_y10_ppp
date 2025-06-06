@@ -129,6 +129,8 @@ def update_board(tile):
     column_num = ord(column_num) - 64
     board[row_num][column_num] = tile
     print(tile)
+    print(row_num)
+    print(column_num)
     print(board)
 
     
