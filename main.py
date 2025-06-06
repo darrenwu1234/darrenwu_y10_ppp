@@ -127,8 +127,7 @@ def update_board(board, tile, destination):
     column_num = ord(column_num.upper()) - 65
     board[row_num][column_num] = "[" + tile + "]"
     
-    print(board)
-
+   
     
     
 def player_move():
@@ -189,6 +188,7 @@ for i in range(num_players):
 
 
 
-player_tiles = draw_tiles(tile_list)           
-player_move()      
+player_tiles = draw_tiles(tile_list)  
+while True:         
+    player_move()      
 
