@@ -88,8 +88,8 @@ def show_info():
     show_board()
 
 def show_board():
-    print(row_char + "".join(board[i]))
-    row_num += 1
+   
+    
     print(f"Current board: ")
     row_num = 1
     print("   A  B  C  D  E  F  G  H  I  J  K  L  M  N  O  P")
