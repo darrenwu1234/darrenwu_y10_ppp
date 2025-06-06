@@ -124,9 +124,9 @@ def update_board(tile):
     global board
     global destination
     
-    row_num = int(destination[1])
+    row_num = int(destination[1]) - 1
     column_num = destination[0]
-    column_num = ord(column_num) - 64
+    column_num = ord(column_num.upper()) - 65
     board[row_num][column_num] = tile
     print(tile)
     print(row_num)
