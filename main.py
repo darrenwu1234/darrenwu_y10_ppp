@@ -85,10 +85,8 @@ global player_turn
 player_turn = 0
 def show_info():
     print(f"Player {player_turn }'s turn!")
-    
-    
-   
     show_board()
+    
 def show_board():
     print(row_char + "".join(board[i]))
     row_num += 1
