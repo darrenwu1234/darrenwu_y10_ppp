@@ -120,9 +120,7 @@ def show_move():
 
 
 
-def update_board(tile):
-    global board
-    global destination
+def update_board(board, tile, destination):
     
     row_num = int(destination[1]) - 1
     column_num = destination[0]
@@ -139,7 +137,7 @@ def player_move():
     show_info()
     get_move()
     tile = show_move()
-    update_board(tile)
+    update_board(board, tile, destination)
     show_board()
     global player_turn
     player_turn += 1
