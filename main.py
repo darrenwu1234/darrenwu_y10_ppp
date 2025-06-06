@@ -9,17 +9,17 @@ for i in range(len(board)):
     for f in range(16):
         board[i].append("[ ]")
 
-def random_tile():
-        global tile_list
+def random_tile(tile_list):
+        
         return tile_list[randint(1,len(tile_list)-1)]
-def draw_tiles():
-    global tile_list
+def draw_tiles(tile_list):
+    
     global num_players
     
     for i in range(7):
         
         for i in range(num_players):
-            player_tiles[i].append(random_tile())
+            player_tiles[i].append(random_tile(tile_list))
     return player_tiles
 def get_move_type(): 
     move_type_valid = False
@@ -189,6 +189,6 @@ for i in range(num_players):
 
 
 
-player_tiles = draw_tiles()           
+player_tiles = draw_tiles(tile_list)           
 player_move()      
 
