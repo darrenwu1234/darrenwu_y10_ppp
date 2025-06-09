@@ -112,9 +112,9 @@ def show_board():
         row_num += 1
     
 def show_move(player_tiles):
-    player_tiles[player_turn]
+    
     tile = player_tiles.pop([player_turn][int(origin)-1])
-    print(f"Tile {tile} moved from {origin} to {destination.upper()}.")
+    print(tile)(f"Tile {tile} moved from {origin} to {destination.upper()}.")
     return tile
 
 
