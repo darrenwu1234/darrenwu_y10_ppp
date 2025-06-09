@@ -137,11 +137,7 @@ def player_move():
     tile = show_move()
     update_board(board, tile, destination)
     show_board()
-    global player_turn
-    player_turn += 1
-    if player_turn == 3:
-        player_turn = 0
-        
+    
 
 
 
