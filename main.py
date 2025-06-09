@@ -10,8 +10,9 @@ for i in range(len(board)):
         board[i].append("[ ]")
 
 def random_tile(tile_list):
-        
-    return tile_list.pop([randint(1,len(tile_list)-1)])
+ 
+    random_tile = tile_list.pop(randint(1,len(tile_list)-1))
+    return random_tile
 def draw_tiles(tile_list):
     
     global num_players
