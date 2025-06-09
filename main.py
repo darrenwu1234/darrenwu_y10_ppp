@@ -191,4 +191,4 @@ for i in range(num_players):
 player_tiles = draw_tiles(tile_list)  
 while True:         
     player_move()      
-
+    player_turn += 1
