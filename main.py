@@ -114,7 +114,7 @@ def show_board():
 def show_move(player_tiles):
     print(player_turn)
     print(int(origin) - 1)
-    tile = player_tiles.pop([player_turn][int(origin)-1])
+    tile = player_tiles[player_turn].pop(int(origin)-1)
     print(f"Tile {tile} moved from {origin} to {destination.upper()}.")
     return tile
 
@@ -140,7 +140,7 @@ def player_move():
     tile = show_move(player_tiles)
     update_board(board, tile, destination)
     show_board()
-    replace_tile()
+    replace_tile(player_tiles)
     
 
 
