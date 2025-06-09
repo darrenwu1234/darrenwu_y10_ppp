@@ -84,9 +84,10 @@ def get_destination():
 global player_turn
 player_turn = 0
 def show_tiles():
-    print(f"Player {player_turn }'s tiles: ")
+    print(player_tiles)
+    print(f"Player {player_turn + 1 }'s tiles: ")
     print("1   2   3   4   5   6   7")
-    for i in player_tiles[player_turn % 3]:
+    for i in player_tiles[player_turn]:
 
         print(i, end = "   ")      
     print("")
@@ -192,3 +193,4 @@ player_tiles = draw_tiles(tile_list)
 while True:         
     player_move()      
     player_turn += 1
+    player_turn = player_turn % num_players
