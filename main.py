@@ -111,10 +111,11 @@ def show_board():
         print(row_char + "".join(board[i]))
         row_num += 1
     
-def show_move():
+def show_move(player_tiles):
     player_tiles[player_turn]
-    tile = player_tiles[player_turn][int(origin)-1]
+    tile = player_tiles.pop([player_turn][int(origin)-1])
     print(f"Tile {tile} moved from {origin} to {destination.upper()}.")
+    
     return tile
 
 
@@ -129,8 +130,8 @@ def update_board(board, tile, destination):
     column_num = ord(column_num.upper()) - 65
     board[row_num][column_num] = "[" + tile + "]"
     
-def replace_tile():
-    pass
+def replace_tile(position, player_tiles):
+    player_tiles[player_turn] = random_tile(tile_list)
     
     
 def player_move():
