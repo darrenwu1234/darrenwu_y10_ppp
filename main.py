@@ -132,8 +132,9 @@ def update_board(board, tile, destination):
     board[row_num][column_num] = "[" + tile + "]"
     
 def replace_tile(player_tiles):
-    player_tiles[player_turn][int(origin)-1] = random_tile(tile_list)
-    
+    r_tile = random_tile(tile_list)
+    player_tiles[player_turn][int(origin)-1] = r_tile
+    print(f"{r_tile} was drawn")
     
 def player_move():
     show_info()
@@ -194,6 +195,6 @@ player_tiles = draw_tiles(tile_list)
 while True:         
     player_move()      
     player_turn += 1
-    print(player_turn)
+    
     player_turn = player_turn % num_players
-    print(player_turn)
+    
