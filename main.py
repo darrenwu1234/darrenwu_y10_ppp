@@ -194,3 +194,4 @@ while True:
     player_move()      
     player_turn += 1
     player_turn = player_turn % num_players
+    print(player_turn)
