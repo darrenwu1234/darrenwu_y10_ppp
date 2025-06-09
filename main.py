@@ -131,7 +131,7 @@ def update_board(board, tile, destination):
     board[row_num][column_num] = "[" + tile + "]"
     
 def replace_tile(player_tiles):
-    player_tiles[player_turn][origin] = random_tile(tile_list)
+    player_tiles[player_turn][int(origin)-1] = random_tile(tile_list)
     
     
 def player_move():
