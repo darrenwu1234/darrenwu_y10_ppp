@@ -11,7 +11,7 @@ for i in range(len(board)):
 
 def random_tile(tile_list):
         
-        return tile_list[randint(1,len(tile_list)-1)]
+    return tile_list.pop([randint(1,len(tile_list)-1)])
 def draw_tiles(tile_list):
     
     global num_players
@@ -128,7 +128,8 @@ def update_board(board, tile, destination):
     column_num = ord(column_num.upper()) - 65
     board[row_num][column_num] = "[" + tile + "]"
     
-   
+def replace_tile():
+    pass
     
     
 def player_move():
@@ -137,6 +138,7 @@ def player_move():
     tile = show_move()
     update_board(board, tile, destination)
     show_board()
+    replace_tile()
     
 
 
