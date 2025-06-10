@@ -105,7 +105,7 @@ def get_destination(move_type):
     else:
         while destination not in ["1","2,","3","4","5","6","7"]:
 
-            print("Not a valid position, please input your location in the form LETTER NUMBER, for example 'A1', and the number has to be between 1 - 16.")
+            print("Not a valid position, please input a number")
 
             destination = input("Please enter where you want to place your tile")
 
