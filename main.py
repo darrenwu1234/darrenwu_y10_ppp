@@ -60,9 +60,9 @@ def get_origin(move_type):
         origin = input("Enter the position where you want to draw your tile from: ") 
 
         while valid_move == False:
-            if len(origin) == 2:
-                length_error = False
-                if origin[0].upper() not in ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"] or origin[:1] not in ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"]:
+            if len(origin) == 2 or len(origin) == 3:
+                
+                if origin[0].upper() not in ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"] or origin[1:] not in ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"]:
 
                     print("Not a valid position, please enter a letter A-P followed by a number 1-16 e.g(D13)")
                     origin = input("Enter the position where you want to draw your tile from: ") 
@@ -87,15 +87,21 @@ def get_move():
     return move_type, origin, destination
     #update_board()
 def get_destination(move_type): 
-
+    valid_move = False
     destination = input("Please enter where you want to place your tile") 
-    if move_type == 1 or move_type == 3:
+    if move_type == "1" or move_type == "3":
+        while valid_move == False:
+            if len(destination) == 2 or len(destination) == 3:
+                
+                if destination[0].upper() not in ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"] or destination[1:] not in ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"]:
 
-        while destination[0].upper() not in ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"] or destination[1] not in ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"]:
-
-            print("Not a valid position, please input your location in the form LETTER NUMBER, for example 'A1', and the number has to be between 1 - 16.")
-
-            destination = input("Please enter where you want to place your tile")
+                    print("Not a valid position, please enter a letter A-P followed by a number 1-16 e.g(D13)")
+                    destination = input("Enter the position where you want to draw your tile from: ") 
+                else:
+                    valid_move = True
+            else:
+                print("Not a valid position, please enter a letter A-P followed by a number 1-16 e.g(D13)")
+                origin = input("Enter the position where you want to draw your tile from: ")
     else:
         while destination not in ["1","2,","3","4","5","6","7"]:
 
