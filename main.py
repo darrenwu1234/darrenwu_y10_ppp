@@ -119,7 +119,7 @@ def show_board():
         print(row_char + "".join(board[i]))
         row_num += 1
     
-def show_move(player_tiles):
+def show_move(player_tiles,move_type,origin,destination):
     print(player_turn)
     print(int(origin) - 1)
     tile = player_tiles[player_turn][int(origin) - 1]
@@ -151,7 +151,7 @@ def player_move():
     while turn_submitted == False:
         show_info()
         move_type, origin, destination = get_move()
-        tile = show_move(player_tiles)
+        tile = show_move(player_tiles,move_type,origin,destination)
         update_board(board, tile, destination)
         show_board()
     replace_tile(player_tiles)
