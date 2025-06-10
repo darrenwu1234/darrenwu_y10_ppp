@@ -36,13 +36,13 @@ def get_move_type():
  
 
 def get_origin(move_type):  
-
+    valid_move = False
     
     
 
   
 
-    if move_type == "1":
+    if move_type == "1" or move_type == "2":
         origin = input("Enter the position where you want to draw your tile from: ")
 
         while origin not in ["1","2","3","4","5","6","7"]: 
@@ -55,20 +55,26 @@ def get_origin(move_type):
 
         
 
-    elif move_type == "2":
-        origin = input("Enter the position where you want to draw your tile from: ") 
-        while origin not in ["1","2","3","4","5","6","7"]:
 
-            print("Not a valid position, please enter a number 1-7")
-            origin = input("Enter the position where you want to draw your tile from: ") 
     elif move_type == "3" or move_type == "4":
         origin = input("Enter the position where you want to draw your tile from: ") 
-        while origin[0].upper() not in ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"] or origin[1] not in ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"]:
 
-            print("Not a valid position, please enter a letter A-P followed by a number 1-16 e.g(D13)")
-            origin = input("Enter the position where you want to draw your tile from: ") 
-   
-        
+        while valid_move == False:
+            if len(origin) == 2:
+                length_error = False
+                if origin[0].upper() not in ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"] or origin[1] not in ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"]:
+
+                    print("Not a valid position, please enter a letter A-P followed by a number 1-16 e.g(D13)")
+                    origin = input("Enter the position where you want to draw your tile from: ") 
+                else:
+                    valid_move == True
+            else:
+                print("Not a valid position, please enter a letter A-P followed by a number 1-16 e.g(D13)")
+                origin = input("Enter the position where you want to draw your tile from: ")
+                
+            
+
+            
     return origin
         
 def get_move(): 
