@@ -62,7 +62,7 @@ def get_origin(move_type):
         while valid_move == False:
             if len(origin) == 2:
                 length_error = False
-                if origin[0].upper() not in ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"] or origin[1] not in ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"]:
+                if origin[0].upper() not in ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"] or origin[:1] not in ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"]:
 
                     print("Not a valid position, please enter a letter A-P followed by a number 1-16 e.g(D13)")
                     origin = input("Enter the position where you want to draw your tile from: ") 
