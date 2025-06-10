@@ -140,11 +140,12 @@ def show_board():
         row_num += 1
     
 def show_move(player_tiles,move_type,origin,destination):
-    print(player_turn)
-    print(int(origin) - 1)
-    tile = player_tiles[player_turn][int(origin) - 1]
-    player_tiles[player_turn][int(origin) - 1] = " "
-    print(f"Tile {tile} moved from {origin} to {destination.upper()}.")
+    if move_type == "1" or move_type == "2":
+        tile = player_tiles[player_turn][int(origin) - 1]
+        player_tiles[player_turn][int(origin) - 1] = " "
+        print(f"Tile {tile} moved from {origin} to {destination.upper()}.")
+    else:
+        tile = board[origin[0]]
     return tile
 
 
