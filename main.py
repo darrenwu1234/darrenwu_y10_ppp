@@ -93,7 +93,7 @@ def show_tiles():
         print(i, end = "   ")      
     print("")
 def show_info():
-    print(f"Player {player_turn }'s turn!")
+    print(f"Player {player_turn +1}'s turn!")
     show_board()
     show_tiles()
 
