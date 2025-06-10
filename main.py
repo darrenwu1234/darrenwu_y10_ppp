@@ -162,7 +162,7 @@ def update_board(board, tile, destination,move_type,player_tiles):
         row_num = int(destination[1:]) - 1
         column_num = destination[0]
         column_num = ord(column_num.upper()) - 65
-        board[row_num][column_num] = "[" + tile + "]"
+        board[row_num][column_num] = tile
     else:
         player_tiles[int(destination)-1] == tile
     
