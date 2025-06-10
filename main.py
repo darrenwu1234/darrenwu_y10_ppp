@@ -197,4 +197,5 @@ while True:
     player_turn += 1
     
     player_turn = player_turn % num_players
+    key_input = input("Enter any key to move on to the next turn")
     
