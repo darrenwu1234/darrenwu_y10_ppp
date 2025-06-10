@@ -130,13 +130,13 @@ def show_board():
     
     print(f"Current board: ")
     row_num = 1
-    print("   A  B  C  D  E  F  G  H  I  J  K  L   M  N  O  P")
+    print("   A  B  C  D  E  F  G  H  I  J  K  L  M  N  O  P")
     for i in range(len(board)):
         if row_num < 10:
             row_char = " " + str(row_num)
         else:
             row_char = str(row_num)
-        print(row_char + "][".join(board[i])+"]")
+        print(row_char + "[" + "][".join(board[i])+"]")
         row_num += 1
     
 def show_move(board,player_tiles,move_type,origin,destination):
