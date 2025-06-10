@@ -35,9 +35,9 @@ def get_move_type():
 
  
 
-def get_origin():  
+def get_origin(move_type):  
 
-    global move_type
+    
     
 
   
@@ -57,26 +57,28 @@ def get_origin():
 
     elif move_type == "2":
         origin = input("Enter the position where you want to draw your tile from: ") 
-        while origin[0].upper() not in ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"] or origin[1] not in ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"]:
+        while origin not in ["1","2","3","4","5","6","7"]:
 
             print("Not a valid position, please enter a number 1-7")
             origin = input("Enter the position where you want to draw your tile from: ") 
-    elif move_type == "3":
+    elif move_type == "3" or move_type == "4":
         origin = input("Enter the position where you want to draw your tile from: ") 
         while origin[0].upper() not in ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"] or origin[1] not in ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"]:
 
-            print("Not a valid position, please enter a number 1-7")
+            print("Not a valid position, please enter a letter A-P followed by a number 1-16 e.g(D13)")
             origin = input("Enter the position where you want to draw your tile from: ") 
+   
+        
     return origin
         
 def get_move(): 
-    global move_type
-    move_type = get_move_type() 
-    global origin
-    origin = get_origin()
-    global destination
-    destination = get_destination() 
     
+    move_type = get_move_type() 
+    
+    origin = get_origin(move_type)
+    
+    destination = get_destination() 
+    return move_type, origin, destination
     #update_board()
 def get_destination(): 
 
@@ -148,7 +150,7 @@ def player_move():
     turn_submitted = False
     while turn_submitted == False:
         show_info()
-        get_move()
+        move_type, origin, destination = get_move()
         tile = show_move(player_tiles)
         update_board(board, tile, destination)
         show_board()
