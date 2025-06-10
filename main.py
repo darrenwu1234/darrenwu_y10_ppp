@@ -136,7 +136,7 @@ def show_board():
             row_char = " " + str(row_num)
         else:
             row_char = str(row_num)
-        print(row_char + "".join(board[i]))
+        print(row_char + "][".join(board[i])+"]")
         row_num += 1
     
 def show_move(board,player_tiles,move_type,origin,destination):
