@@ -135,6 +135,8 @@ def replace_tile(player_tiles):
     r_tile = random_tile(tile_list)
     player_tiles[player_turn][int(origin)-1] = r_tile
     print(f"{r_tile} was drawn")
+    print("Current tiles : ")
+    
     
 def player_move():
     show_info()
