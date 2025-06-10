@@ -103,11 +103,14 @@ def get_destination(move_type):
                 print("Not a valid position, please enter a letter A-P followed by a number 1-16 e.g(D13)")
                 origin = input("Enter the position where you want to draw your tile from: ")
     else:
-        if destination not in ["1","2","3","4","5","6","7"]:
+        while valid_move == False:
+            if destination not in ["1","2","3","4","5","6","7"]:
 
-            print("Not a valid position, please input a number")
+                print("Not a valid position, please input a number")
 
-            destination = input("Please enter where you want to place your tile")
+                destination = input("Please enter where you want to place your tile")
+            else:
+                valid_move = True
         
     return destination
 global player_turn
