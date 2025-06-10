@@ -77,18 +77,26 @@ def get_move():
     
     origin = get_origin(move_type)
     
-    destination = get_destination() 
+    destination = get_destination(move_type) 
     return move_type, origin, destination
     #update_board()
-def get_destination(): 
+def get_destination(move_type): 
 
     destination = input("Please enter where you want to place your tile") 
-    
-    while destination[0].upper() not in ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"] or destination[1] not in ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"]:
+    if move_type == 1 or move_type == 3:
 
-        print("Not a valid position, please input your location in the form LETTER NUMBER, for example 'A1', and the number has to be between 1 - 16.")
+        while destination[0].upper() not in ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"] or destination[1] not in ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"]:
 
-        destination = input("Please enter where you want to place your tile") 
+            print("Not a valid position, please input your location in the form LETTER NUMBER, for example 'A1', and the number has to be between 1 - 16.")
+
+            destination = input("Please enter where you want to place your tile")
+    else:
+        while destination not in ["1","2,","3","4","5","6","7"]:
+
+            print("Not a valid position, please input your location in the form LETTER NUMBER, for example 'A1', and the number has to be between 1 - 16.")
+
+            destination = input("Please enter where you want to place your tile")
+
     return destination
 global player_turn
 player_turn = 0
@@ -110,7 +118,7 @@ def show_board():
     
     print(f"Current board: ")
     row_num = 1
-    print("   A  B  C  D  E  F  G  H  I  J  K  L  M  N  O  P")
+    print("   A  B  C  D  E  F  G  H  I  J  K  L   M  N  O  P")
     for i in range(len(board)):
         if row_num < 10:
             row_char = " " + str(row_num)
