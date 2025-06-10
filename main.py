@@ -7,7 +7,7 @@ for i in range(16):
     board.append([])
 for i in range(len(board)):
     for f in range(16):
-        board[i].append("[ ]")
+        board[i].append(" ")
 
 def random_tile(tile_list):
  
