@@ -164,7 +164,7 @@ def update_board(board, tile, destination,move_type,player_tiles):
         column_num = ord(column_num.upper()) - 65
         board[row_num][column_num] = "[" + tile + "]"
     else:
-        player_tiles[destination-1] == tile
+        player_tiles[int(destination)-1] == tile
     
 def replace_tile(player_tiles):
     r_tile = random_tile(tile_list)
