@@ -148,7 +148,7 @@ def show_move(board,player_tiles,move_type,origin,destination):
         row_num = int(destination[1:]) - 1
         column_num = destination[0]
         column_num = ord(column_num.upper()) - 65
-        tile = board[[row_num][column_num]]
+        tile = board[row_num][column_num]
         print(f"Tile {tile} moved from {origin} to {destination.upper()}.")
     return tile
 
@@ -157,12 +157,14 @@ def show_move(board,player_tiles,move_type,origin,destination):
 
 
 
-def update_board(board, tile, destination):
-    
-    row_num = int(destination[1:]) - 1
-    column_num = destination[0]
-    column_num = ord(column_num.upper()) - 65
-    board[row_num][column_num] = "[" + tile + "]"
+def update_board(board, tile, destination,move_type,player_tiles):
+    if move_type == "1" or move_type == "3":
+        row_num = int(destination[1:]) - 1
+        column_num = destination[0]
+        column_num = ord(column_num.upper()) - 65
+        board[row_num][column_num] = "[" + tile + "]"
+    else:
+        player_tiles[destination-1] == tile
     
 def replace_tile(player_tiles):
     r_tile = random_tile(tile_list)
@@ -179,7 +181,7 @@ def player_move():
         show_info()
         move_type, origin, destination = get_move()
         tile = show_move(board,player_tiles,move_type,origin,destination)
-        update_board(board, tile, destination)
+        update_board(board, tile, destination,move_type,player_tiles)
         show_board()
     replace_tile(player_tiles)
     
