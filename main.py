@@ -149,6 +149,7 @@ def show_move(board,player_tiles,move_type,origin,destination):
         column_num = origin[0]
         column_num = ord(column_num.upper()) - 65
         tile = board[row_num][column_num]
+        board[row_num][column_num] = " "
         print(f"Tile {tile} moved from {origin} to {destination.upper()}.")
     return tile
 
