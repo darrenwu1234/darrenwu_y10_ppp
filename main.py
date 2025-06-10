@@ -25,9 +25,9 @@ def draw_tiles(tile_list):
 def get_move_type(): 
     move_type_valid = False
     while move_type_valid == False:
-        move_type = input("What move type do you want? \n Enter 1 to move a tile on your rack to the board \n Enter 2 to move a tile on the rack to a different square on the rack")
-        if move_type != "1" and move_type != "2":
-            print("Invalid input, please enter either 1 or 2: ")
+        move_type = input("What move type do you want? \n Enter 1 to move a tile on your rack to the board \n Enter 2 to move a tile on the rack to a different square on the rack\n Enter 3 to move a tile on the board to a different square on the board\n Enter 4 to move a tile on the board to a position on your rack")
+        if move_type != "1" and move_type != "2" and move_type != "3" and move_type != "4":
+            print("Invalid input, please enter either 1,2,3 or 4: ")
         else:
             move_type_valid = True
     
@@ -56,6 +56,12 @@ def get_origin():
         
 
     elif move_type == "2":
+        origin = input("Enter the position where you want to draw your tile from: ") 
+        while origin[0].upper() not in ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"] or origin[1] not in ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"]:
+
+            print("Not a valid position, please enter a number 1-7")
+            origin = input("Enter the position where you want to draw your tile from: ") 
+    elif move_type == "3":
         origin = input("Enter the position where you want to draw your tile from: ") 
         while origin[0].upper() not in ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"] or origin[1] not in ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"]:
 
