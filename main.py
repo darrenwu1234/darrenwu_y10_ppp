@@ -83,7 +83,7 @@ def get_move():
 def get_destination(): 
 
     destination = input("Please enter where you want to place your tile") 
-   
+    
     while destination[0].upper() not in ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"] or destination[1] not in ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"]:
 
         print("Not a valid position, please input your location in the form LETTER NUMBER, for example 'A1', and the number has to be between 1 - 16.")
@@ -141,7 +141,9 @@ def update_board(board, tile, destination):
     
 def replace_tile(player_tiles):
     r_tile = random_tile(tile_list)
-    player_tiles[player_turn][int(origin)-1] = r_tile
+    for i in player_tiles[player_turn]:
+        if i == " ":
+            i = r_tile
     print(f"{r_tile} was drawn")
     show_tiles()
     
