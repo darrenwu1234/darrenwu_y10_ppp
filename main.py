@@ -139,11 +139,13 @@ def replace_tile(player_tiles):
     
     
 def player_move():
-    show_info()
-    get_move()
-    tile = show_move(player_tiles)
-    update_board(board, tile, destination)
-    show_board()
+    turn_submitted = False
+    while turn_submitted == False:
+        show_info()
+        get_move()
+        tile = show_move(player_tiles)
+        update_board(board, tile, destination)
+        show_board()
     replace_tile(player_tiles)
     
 
