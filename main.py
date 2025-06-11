@@ -137,7 +137,7 @@ def show_tiles():
     print("")
 def show_info():
     
-    show_board()
+    
     show_tiles()
 
 def show_board():
@@ -200,6 +200,7 @@ def player_move():
     print(f"Player {player_turn +1}'s turn!")
     temp_board = []
     turn_submitted = False
+    show_board()
     while turn_submitted == False:
         show_info()
         move_type, origin, destination = get_move()
