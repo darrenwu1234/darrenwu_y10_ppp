@@ -136,7 +136,7 @@ def show_tiles():
         print(i, end = "   ")      
     print("")
 def show_info():
-    print(f"Player {player_turn +1}'s turn!")
+    
     show_board()
     show_tiles()
 
@@ -196,6 +196,7 @@ def replace_tile(player_tiles):
     
     
 def player_move():
+    print(f"Player {player_turn +1}'s turn!")
     temp_board = []
     turn_submitted = False
     while turn_submitted == False:
