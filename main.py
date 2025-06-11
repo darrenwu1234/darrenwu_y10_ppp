@@ -181,8 +181,7 @@ def update_board(board, tile, destination,move_type,player_tiles,temp_board):
         board[row_num][column_num] = tile
         temp_board.append([tile,row_num,column_num])
     else:
-        row_num = player_turn
-        column_num = int(destination) -1
+        
         player_tiles[player_turn][int(destination)-1] = tile
         temp_board.remove([tile,player_turn,int(destination)-1])
     print(temp_board)
