@@ -184,7 +184,7 @@ def update_board(board, tile, destination,move_type,player_tiles,temp_board):
         row_num = player_turn
         column_num = int(destination) -1
         player_tiles[player_turn][int(destination)-1] = tile
-        temp_board.pop([tile,player_turn,int(destination)-1])
+        temp_board.remove([tile,player_turn,int(destination)-1])
     print(temp_board)
     
 def replace_tile(player_tiles):
