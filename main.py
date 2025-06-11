@@ -207,15 +207,20 @@ def player_move():
         tile = show_move(board,player_tiles,move_type,origin,destination,temp_board)
         update_board(board, tile, destination,move_type,player_tiles,temp_board)
         show_board()
-        is_valid_output()
+        is_valid_output(temp_board)
     replace_tile(player_tiles)
     
-def is_valid_output():
+def is_valid_output(temp_board):
     valid_output = False
-    for i in temp_board():
-        for f in temp_board():
-            if i[1][2] == f[1][2]:
+    for i in temp_board:
+        for f in temp_board:
+            if [i[1] + 1,i[2]] == [f[1],f[2]]:
                 valid_output = True
+            else:
+                pass
+    print(valid_output)
+            
+            
 
 
 
