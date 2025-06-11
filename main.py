@@ -219,6 +219,7 @@ def is_valid_output(temp_board):
                     valid_output = True
                 else:
                     valid_output = False
+                #mistake here is that it loops for both i values
     print(valid_output)
             
             
