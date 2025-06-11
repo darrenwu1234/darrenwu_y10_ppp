@@ -154,7 +154,7 @@ def show_board():
         print(row_char + "[" + "][".join(board[i])+"]")
         row_num += 1
     
-def show_move(board,player_tiles,move_type,origin,destination):
+def show_move(board,player_tiles,move_type,origin,destination,temp_board):
     if move_type == "1" or move_type == "2":
         tile = player_tiles[player_turn][int(origin) - 1]
         player_tiles[player_turn][int(origin) - 1] = " "
@@ -165,6 +165,7 @@ def show_move(board,player_tiles,move_type,origin,destination):
         column_num = ord(column_num.upper()) - 65
         tile = board[row_num][column_num]
         board[row_num][column_num] = " "
+        temp_board.remove([tile,row_num,column_num])
         print(f"Tile {tile} moved from {origin} to {destination.upper()}.")
     return tile
 
@@ -183,7 +184,7 @@ def update_board(board, tile, destination,move_type,player_tiles,temp_board):
     else:
         
         player_tiles[player_turn][int(destination)-1] = tile
-        temp_board.remove([tile,player_turn,int(destination)-1])
+        
     print(temp_board)
     
 def replace_tile(player_tiles):
@@ -203,7 +204,7 @@ def player_move():
     while turn_submitted == False:
         show_info()
         move_type, origin, destination = get_move()
-        tile = show_move(board,player_tiles,move_type,origin,destination)
+        tile = show_move(board,player_tiles,move_type,origin,destination,temp_board)
         update_board(board, tile, destination,move_type,player_tiles,temp_board)
         show_board()
     replace_tile(player_tiles)
