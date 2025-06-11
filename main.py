@@ -1,5 +1,17 @@
 from collections import Counter
 from random import randint
+import nltk
+from nltk.corpus import words
+
+# Download the word list if you haven't already
+nltk.download('words')
+
+# Create a set of valid words
+valid_words = set(words.words())
+
+def is_valid_word(word):
+    return word.lower() in valid_words
+
 value_dict = {"A" : 1, "B": 3, "C": 3, "D" : 2, "E": 1, "F": 4,"G": 2,"H": 4, "I": 1, "J": 8, "K": 5, "L": 1,"M": 3, "N": 1, "O": 1, "P": 3, "Q": 10, "R": 1, "S": 1, "T": 1, "U": 1, "V": 4, "W": 4, "X": 8, "Y": 4, "Z": 10}
 board = []
 for i in range(16):
@@ -169,6 +181,7 @@ def update_board(board, tile, destination,move_type,player_tiles):
         board[row_num][column_num] = tile
     else:
         player_tiles[player_turn][int(destination)-1] = tile
+    temp_board.append()
     
 def replace_tile(player_tiles):
     r_tile = random_tile(tile_list)
@@ -180,6 +193,7 @@ def replace_tile(player_tiles):
     
     
 def player_move():
+    temp_board = []
     turn_submitted = False
     while turn_submitted == False:
         show_info()
