@@ -173,7 +173,7 @@ def show_move(board,player_tiles,move_type,origin,destination):
 
 
 
-def update_board(board, tile, destination,move_type,player_tiles):
+def update_board(board, tile, destination,move_type,player_tiles,temp_board):
     if move_type == "1" or move_type == "3":
         row_num = int(destination[1:]) - 1
         column_num = destination[0]
@@ -181,7 +181,7 @@ def update_board(board, tile, destination,move_type,player_tiles):
         board[row_num][column_num] = tile
     else:
         player_tiles[player_turn][int(destination)-1] = tile
-    temp_board.append()
+    temp_board.append([row_num,column_num])
     
 def replace_tile(player_tiles):
     r_tile = random_tile(tile_list)
@@ -199,7 +199,7 @@ def player_move():
         show_info()
         move_type, origin, destination = get_move()
         tile = show_move(board,player_tiles,move_type,origin,destination)
-        update_board(board, tile, destination,move_type,player_tiles)
+        update_board(board, tile, destination,move_type,player_tiles,temp_board)
         show_board()
     replace_tile(player_tiles)
     
