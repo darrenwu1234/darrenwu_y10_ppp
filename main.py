@@ -225,13 +225,9 @@ def is_valid_output(temp_board):
                     if [i[1] + g,i[2]] == [f[1],f[2]]:
                         valid_output = True
                     else:
-                        print("Not VErtical")
-                        if [i[1],i[2]+g] == [f[1],f[2]]:
-                            valid_output = True
-                        else:
-                            valid_output = False
-                            print("Not horizontal")
-                
+                        
+                        Q
+                            
                     
                 #mistake here is that it loops for both i values
     print(valid_output)
