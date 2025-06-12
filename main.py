@@ -213,7 +213,7 @@ def player_move(player_tiles):
     replace_tile(player_tiles)
     
 def is_valid_output(temp_board):
-    valid_output = True
+    valid_output = False
     temp_row_list = []
     for i in temp_board:
         temp_row_list.append(i[1])
