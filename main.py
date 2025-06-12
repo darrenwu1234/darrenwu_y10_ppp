@@ -220,10 +220,10 @@ def is_valid_output(temp_board):
         temp_row_list.sort()
     g = 0
     print(temp_row_list)
-    for f in range(len(temp_row_list)):
+    for f in range(1,len(temp_row_list)):
         if valid_output == False:
             g += 1
-            if temp_row_list[f] == temp_row_list[f+1]+g:
+            if temp_row_list[0] == temp_row_list[f]+g:
                 valid_output = True
             else:
                 valid_output = False
