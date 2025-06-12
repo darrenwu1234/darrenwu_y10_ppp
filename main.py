@@ -216,7 +216,7 @@ def is_valid_output(temp_board):
     valid_output = False
     for i in temp_board:
         if valid_output == False:
-            for (f,g) in zip(temp_board,range(1,len(temp_board)-1)):
+            for (f,g) in zip(temp_board,range(1,len(temp_board))):
                 print("b")
                 print(i,f,g)
                 if i != f:
