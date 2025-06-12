@@ -227,19 +227,7 @@ def is_valid_output(temp_board):
                             pass
                         else:
                             valid_output = False
-        if valid_output == False:
-            valid_output = True
-        if valid_output == True:
-            g=0
-            for f in temp_board:
-                if valid_output == True:
-                    if i != f:
-                        g+=1
-                        if [i[1],i[2]+g] == [f[1],f[2]]:
-                            valid_output = True
-                        else:
-                            valid_output = False
-                                
+        
                         
                 #mistake here is that it loops for both i values
     print(valid_output)
