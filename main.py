@@ -2,8 +2,9 @@ from collections import Counter
 from random import randint
 import nltk
 from nltk.corpus import words
+import itertools
 
-# Download the word list if you haven't already
+
 nltk.download('words')
 
 # Create a set of valid words
@@ -185,7 +186,7 @@ def update_board(board, tile, destination,move_type,player_tiles,temp_board):
         
         player_tiles[player_turn][int(destination)-1] = tile
         
-    print(temp_board)
+    
     
 def replace_tile(player_tiles):
     r_tile = random_tile(tile_list)
@@ -196,7 +197,7 @@ def replace_tile(player_tiles):
     show_tiles()
     
     
-def player_move():
+def player_move(player_tiles):
     print(f"Player {player_turn +1}'s turn!")
     temp_board = []
     turn_submitted = False
@@ -206,6 +207,7 @@ def player_move():
         move_type, origin, destination = get_move()
         tile = show_move(board,player_tiles,move_type,origin,destination,temp_board)
         update_board(board, tile, destination,move_type,player_tiles,temp_board)
+        
         show_board()
         is_valid_output(temp_board)
     replace_tile(player_tiles)
@@ -213,12 +215,18 @@ def player_move():
 def is_valid_output(temp_board):
     valid_output = False
     for i in temp_board:
-        for f in temp_board:
-            if i != f:
-                if [i[1] + 1,i[2]] == [f[1],f[2]]:
-                    valid_output = True
-                else:
-                    valid_output = False
+        if valid_output == False:
+            for (f,g) in zip(temp_board,range(1,len(temp_board)-1)):
+            
+                if i != f:
+                    print("a")
+                    print(i,f,g)
+                    if [i[1] + g,i[2]] == [f[1],f[2]]:
+                        valid_output = True
+                    else:
+                        valid_output = False
+                
+                    
                 #mistake here is that it loops for both i values
     print(valid_output)
             
@@ -272,7 +280,7 @@ for i in range(num_players):
 
 player_tiles = draw_tiles(tile_list)  
 while True:         
-    player_move()      
+    player_move(player_tiles)      
     player_turn += 1
     
     player_turn = player_turn % num_players
