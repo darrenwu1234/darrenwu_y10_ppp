@@ -219,6 +219,7 @@ def is_valid_output(temp_board):
         temp_row_list.append(i[1])
         temp_row_list.sort()
     g = 0
+    print(temp_row_list)
     for f in range(len(temp_row_list)):
         if valid_output == False:
             g += 1
