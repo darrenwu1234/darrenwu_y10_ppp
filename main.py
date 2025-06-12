@@ -213,12 +213,19 @@ def player_move(player_tiles):
     replace_tile(player_tiles)
     
 def is_valid_output(temp_board):
-    valid_output = False
+    valid_output = True
     temp_row_list = []
     for i in temp_board:
         temp_row_list.append(i[1])
         temp_row_list.sort()
-    print(temp_row_list)
+    g = 0
+    for f in range(len(temp_row_list)):
+        if valid_output == False:
+            g += 1
+            if temp_row_list[f] == temp_row_list[f+1]+g:
+                valid_output = True
+            else:
+                valid_output = False
     
         
                         
