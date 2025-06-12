@@ -213,9 +213,10 @@ def player_move(player_tiles):
     replace_tile(player_tiles)
     
 def is_valid_output(temp_board):
-    valid_output = True
+    valid_output = False
     for i in temp_board:
-        if valid_output == True:
+        if valid_output == False:
+            valid_output = True
             g=0
             for f in temp_board:
                 if valid_output == True:
