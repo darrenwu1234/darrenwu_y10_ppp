@@ -218,14 +218,14 @@ def is_valid_output(temp_board):
         if valid_output == False:
             g=0
             for f in temp_board:
-                
-                if i != f:
-                    g+=1
-                    
-                    if [i[1] + g,i[2]] == [f[1],f[2]]:
-                        valid_output = True
-                    else:
-                        valid_output = False
+                if valid_output == False:
+                    if i != f:
+                        g+=1
+                        
+                        if [i[1] + g,i[2]] == [f[1],f[2]]:
+                            valid_output = True
+                        else:
+                            valid_output = False
     
         if valid_output == False:
             g=0
