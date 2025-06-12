@@ -218,13 +218,10 @@ def is_valid_output(temp_board):
         if valid_output == False:
             g=0
             for f in temp_board:
-                print("b")
                 
-                print(i,f,g)
                 if i != f:
                     g+=1
-                    print("a")
-                    print(i,f,g)
+                    
                     if [i[1] + g,i[2]] == [f[1],f[2]]:
                         valid_output = True
                     else:
