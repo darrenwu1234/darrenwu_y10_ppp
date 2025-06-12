@@ -230,7 +230,7 @@ def is_valid_output(temp_board):
     
         
                         
-                #mistake here is that it loops for both i values
+                #make it so that it sees if everything is on the same row 
     print(valid_output)
             
             
