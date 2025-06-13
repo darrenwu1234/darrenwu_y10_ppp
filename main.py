@@ -239,7 +239,8 @@ def is_valid_output(temp_board):
                     valid_output = True
                 else:
                     valid_output = False
-        
+    else:
+        valid_output = False    
                         
                 #make it so that it sees if everything is on the same row 
     print(valid_output)
