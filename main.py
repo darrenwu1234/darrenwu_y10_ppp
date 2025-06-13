@@ -204,18 +204,30 @@ def player_move(player_tiles):
 def is_valid_output(temp_board):
     valid_output = False
     temp_row_list = []
+    temp_column_list = []
     for i in temp_board:
         temp_row_list.append(i[1])
-        temp_row_list.sort()
+        temp_column_list.append(i[2])
+    temp_row_list.sort()
+    temp_column_list.sort()
     g = 0
     print(temp_row_list)
-    for f in range(1,len(temp_row_list)):
-        if valid_output == False:
-            g += 1
-            if temp_row_list[0]+g == temp_row_list[f]:
-                valid_output = True
-            else:
-                valid_output = False
+    is_row = True
+    for i in range(len(temp_row_list)):
+        if temp_row_list[0] != temp_row_list[i]:
+            is_row = False
+    is_column = True
+    for i in range(len(temp_column_list)):
+        if temp_column_list[0] != temp_column_list[i]:
+            is_column = False
+    if is_row == True and is_column:
+        for f in range(1,len(temp_row_list)):
+            if valid_output == False:
+                g += 1
+                if temp_row_list[0]+g == temp_row_list[f]:
+                    valid_output = True
+                else:
+                    valid_output = False
     
         
                         
