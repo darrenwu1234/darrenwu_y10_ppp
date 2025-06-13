@@ -99,12 +99,12 @@ def get_destination(move_type):
                     print(destination[0])
                     print(destination[1:])
                     print("Not a valid position, please enter a letter A-P followed by a number 1-16 e.g(D13)")
-                    destination = input("Enter the position where you want to draw your tile from: ") 
+                    destination = input("Enter the position where you want to place your tile: ") 
                 else:
                     valid_move = True
             else:
                 print("Not a valid position, please enter a letter A-P followed by a number 1-16 e.g(D13)")
-                origin = input("Enter the position where you want to draw your tile from: ")
+                destination = input("Enter the position where you want to place your tile: ")
     else:
         while valid_move == False:
             if destination not in ["1","2","3","4","5","6","7"]:
