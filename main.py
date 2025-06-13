@@ -220,7 +220,8 @@ def is_valid_output(temp_board):
     for i in range(len(temp_column_list)):
         if temp_column_list[0] != temp_column_list[i]:
             is_column = False
-    if is_row == True and is_column:
+    if is_column == True:
+        
         for f in range(1,len(temp_row_list)):
             if valid_output == False:
                 g += 1
