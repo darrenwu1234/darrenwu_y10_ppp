@@ -202,7 +202,7 @@ def player_move(player_tiles):
     replace_tile(player_tiles)
     
 def is_valid_output(temp_board):
-    valid_output = False
+    valid_output = True
     temp_row_list = []
     temp_column_list = []
     for i in temp_board:
@@ -224,7 +224,7 @@ def is_valid_output(temp_board):
     if is_column == True:
         
         for f in range(1,len(temp_row_list)):
-            if valid_output == False:
+            if valid_output == True:
                 g += 1
                 if temp_row_list[0]+g == temp_row_list[f]:
                     valid_output = True
