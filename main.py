@@ -214,7 +214,11 @@ def is_valid_output(temp_board):
         
         for i in temp_board:
             word += i[0]
-    print(word)
+    if word in dictionary_set:
+        valid_output = True
+    else:
+        valid_output = False
+    print(valid_output)
     
 def is_straight(temp_board):
     valid_output = True
