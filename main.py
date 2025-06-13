@@ -210,12 +210,12 @@ def player_move(player_tiles):
     show_board()
     while turn_submitted == False:
         show_info()
-        valid_output, word, word_score = is_valid_output(temp_board)
         move_type, origin, destination = get_move(valid_output, word, word_score,player_scores,player_turn)
         tile = show_move(board,player_tiles,move_type,origin,destination,temp_board)
         update_board(board, tile, destination,move_type,player_tiles,temp_board)
+        valid_output, word, word_score = is_valid_output(temp_board)
         
-        show_board()
+        
         
         
     replace_tile(player_tiles)
