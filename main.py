@@ -96,7 +96,8 @@ def get_destination(move_type):
             if len(destination) == 2 or len(destination) == 3:
                 
                 if destination[0].upper() not in ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P"] or destination[1:] not in ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"]:
-
+                    print(destination[0])
+                    print(destination[1:])
                     print("Not a valid position, please enter a letter A-P followed by a number 1-16 e.g(D13)")
                     destination = input("Enter the position where you want to draw your tile from: ") 
                 else:
