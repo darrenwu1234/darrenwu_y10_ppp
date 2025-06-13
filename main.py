@@ -1,7 +1,7 @@
 from collections import Counter
 from random import randint
 dictionary_set = set(line.strip() for line in open('dictionary.txt'))
-print(dictionary_set)
+
 value_dict = {"A" : 1, "B": 3, "C": 3, "D" : 2, "E": 1, "F": 4,"G": 2,"H": 4, "I": 1, "J": 8, "K": 5, "L": 1,"M": 3, "N": 1, "O": 1, "P": 3, "Q": 10, "R": 1, "S": 1, "T": 1, "U": 1, "V": 4, "W": 4, "X": 8, "Y": 4, "Z": 10}
 board = []
 for i in range(16):
@@ -205,12 +205,17 @@ def player_move(player_tiles):
 def is_valid_output(temp_board):
     valid_output, is_column,is_row = is_straight(temp_board)
     word = ""
-    word_list =  temp_board
+    
     if valid_output == True:
+        if is_column == True:
+            temp_board.sort(key=lambda x: x[1]) 
+        elif is_row == True:
+            temp_board.sort(key=lambda x: x[2])
+        
         for i in temp_board:
-            for f in temp_board:
-                if i[1] < f[1]:
-                    pass
+            word += i[0]
+    print(word)
+    
 def is_straight(temp_board):
     valid_output = True
     temp_row_list = []
@@ -253,7 +258,7 @@ def is_straight(temp_board):
         valid_output = False    
                         
                 
-    print(valid_output)
+
     return valid_output,is_column,is_row    
 
 
