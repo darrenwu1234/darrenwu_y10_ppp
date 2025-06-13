@@ -236,7 +236,7 @@ def is_valid_output(temp_board):
         for f in range(1,len(temp_column_list)):
             if valid_output == False:
                 g += 1
-                if temp_row_list[0]+g == temp_row_list[f]:
+                if temp_column_list[0]+g == temp_column_list[f]:
                     valid_output = True
                 else:
                     valid_output = False
@@ -245,7 +245,7 @@ def is_valid_output(temp_board):
                         
                 
     print(valid_output)
-    return valid_output,
+    return valid_output,is_column,is_row
             
 
 
