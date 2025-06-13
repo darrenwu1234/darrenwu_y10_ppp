@@ -243,9 +243,9 @@ def is_valid_output(temp_board):
     else:
         valid_output = False    
                         
-                #make it so that it sees if everything is on the same row 
+                
     print(valid_output)
-            
+    return valid_output,
             
 
 
