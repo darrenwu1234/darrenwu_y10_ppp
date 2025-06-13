@@ -215,6 +215,7 @@ def is_valid_output(temp_board):
     is_row = True
     for i in range(len(temp_row_list)):
         if temp_row_list[0] != temp_row_list[i]:
+            
             is_row = False
     is_column = True
     for i in range(len(temp_column_list)):
