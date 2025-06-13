@@ -215,14 +215,14 @@ def is_valid_output(temp_board):
         for i in temp_board:
             word += i[0]
     else:
-        print("Word is not valid")
+        print("Word is not valid, it is not in a straight line")
 
     if word in dictionary_set:
         valid_output = True
         print("Word is valid")
     else:
         valid_output = False
-        print("Word is not valid")
+        print("Word is not valid, the word you have inputed is not a real word")
     
     
     
