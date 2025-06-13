@@ -3,6 +3,7 @@ from random import randint
 dictionary_set = set(line.strip() for line in open('dictionary.txt'))
 
 value_dict = {"A" : 1, "B": 3, "C": 3, "D" : 2, "E": 1, "F": 4,"G": 2,"H": 4, "I": 1, "J": 8, "K": 5, "L": 1,"M": 3, "N": 1, "O": 1, "P": 3, "Q": 10, "R": 1, "S": 1, "T": 1, "U": 1, "V": 4, "W": 4, "X": 8, "Y": 4, "Z": 10}
+
 board = []
 for i in range(16):
     
@@ -24,14 +25,17 @@ def draw_tiles(tile_list):
         for i in range(num_players):
             player_tiles[i].append(random_tile(tile_list))
     return player_tiles
-def get_move_type(): 
+
+def get_move_type(valid_output, word, word_score,player_scores,player_turn): 
     move_type_valid = False
     while move_type_valid == False:
-        move_type = input("What move type do you want? \n Enter 1 to move a tile on your rack to the board \n Enter 2 to move a tile on the rack to a different square on the rack\n Enter 3 to move a tile on the board to a different square on the board\n Enter 4 to move a tile on the board to a position on your rack")
-        if move_type != "1" and move_type != "2" and move_type != "3" and move_type != "4":
+        move_type = input("What move type do you want? \n Enter 1 to move a tile on your rack to the board \n Enter 2 to move a tile on the rack to a different square on the rack\n Enter 3 to move a tile on the board to a different square on the board\n Enter 4 to move a tile on the board to a position on your rack\n Enter 5 to submit your word")
+        if move_type != "1" and move_type != "2" and move_type != "3" and move_type != "4" and move_type != "5":
             print("Invalid input, please enter either 1,2,3 or 4: ")
         else:
             move_type_valid = True
+        if move_type == "5":
+            submit(valid_output, word, word_score,player_scores,player_turn)
     
     return move_type 
 
@@ -79,9 +83,9 @@ def get_origin(move_type):
             
     return origin
         
-def get_move(): 
+def get_move(valid_output, word, word_score,player_scores,player_turn): 
     
-    move_type = get_move_type() 
+    move_type = get_move_type(valid_output, word, word_score,player_scores,player_turn) 
     
     origin = get_origin(move_type)
     
@@ -119,13 +123,25 @@ def get_destination(move_type):
 global player_turn
 player_turn = 0
 def show_tiles():
-    print(player_tiles)
+   
     print(f"Player {player_turn + 1 }'s tiles: ")
-    print("1   2   3   4   5   6   7")
+    print("Tile Number - 1   2   3   4   5   6   7")
+    print("              ", end = "")
     for i in player_tiles[player_turn]:
 
         print(i, end = "   ")      
     print("")
+    print("Tile Values - ",end = "")
+    for i in player_tiles[player_turn]:
+        try:
+            if value_dict[i] != 10:
+                print(value_dict[i],end = "   ")
+            else:
+                print(value_dict[i],end = "  ")
+        except:
+            print(" ",end = "   ")
+    print("")
+
 def show_info():
     
     
@@ -194,15 +210,40 @@ def player_move(player_tiles):
     show_board()
     while turn_submitted == False:
         show_info()
-        move_type, origin, destination = get_move()
+        valid_output, word, word_score = is_valid_output(temp_board)
+        move_type, origin, destination = get_move(valid_output, word, word_score,player_scores,player_turn)
         tile = show_move(board,player_tiles,move_type,origin,destination,temp_board)
         update_board(board, tile, destination,move_type,player_tiles,temp_board)
         
         show_board()
-        is_valid_output(temp_board)
+        
+        
     replace_tile(player_tiles)
+
+def submit(valid_output, word, word_score,player_scores,player_turn):
+    valid_input = False
+    if valid_output == True:
+        
+        while valid_input == False:
+            is_submit = input("Do you want to submit your turn? y/n")
+            if is_submit.upper() == "YES" or is_submit.upper() == "Y" or is_submit.upper() == "YE" or is_submit.upper() == "YS" or is_submit.upper() == "YEAH":
+                is_submit = True
+                valid_input = False
+            elif is_submit.upper() == "NO" or is_submit.upper() == "N" or is_submit.upper() == "NAH" or is_submit.upper() == "NOPE" or is_submit.upper() == "N O":
+                is_submit = False
+                valid_input = True
+            if valid_input == False:
+                print('Invalid input, please enter y for yes, or n for no')
     
+    else:
+        is_submit = False
+        
+        print("Word is not valid, so you cannot submit it.")
+    if is_submit == True:
+        player_scores[player_turn] += word_score
+        print(f"{word} submitted for {word_score} points, Player {player_turn + 1}'s score is now {player_scores[player_turn]}")
 def is_valid_output(temp_board):
+    word_score = 0
     valid_output, is_column,is_row = is_straight(temp_board)
     word = ""
     
@@ -211,21 +252,25 @@ def is_valid_output(temp_board):
             temp_board.sort(key=lambda x: x[1]) 
         elif is_row == True:
             temp_board.sort(key=lambda x: x[2])
-        
+        print("Current word score")
         for i in temp_board:
             word += i[0]
+            word_score += value_dict[i[0]]
+           
+            print(f"{i[0]} - {value_dict[i[0]]}")
+        print(f"Total word score is - {word_score}")
+        if word in dictionary_set:
+            valid_output = True
+            print("Word is valid")
+        else:
+            valid_output = False
+            print("Word is not valid, the word you have inputed is not a real word")
+    
+    
     else:
         print("Word is not valid, it is not in a straight line")
-
-    if word in dictionary_set:
-        valid_output = True
-        print("Word is valid")
-    else:
-        valid_output = False
-        print("Word is not valid, the word you have inputed is not a real word")
-    
-    
-    
+    return valid_output, word, word_score
+       
 def is_straight(temp_board):
     valid_output = True
     temp_row_list = []
@@ -236,7 +281,7 @@ def is_straight(temp_board):
     temp_row_list.sort()
     temp_column_list.sort()
     g = 0
-    print(temp_row_list)
+    
     is_row = True
     for i in range(len(temp_row_list)):
         if temp_row_list[0] != temp_row_list[i]:
@@ -279,6 +324,7 @@ def is_straight(temp_board):
 # testing gitdoc
 print("Welcome to Scrabble!")
 #get the values 
+player_scores = []
 num_players_valid = False
 while num_players_valid == False:
     try:
@@ -289,7 +335,8 @@ while num_players_valid == False:
             num_players_valid = True
     except ValueError:
         print("Invalid input, please enter a whole number 1 - 4")
-    
+    for i in range(num_players):
+            player_scores.append([0])
 
 
 win_condition_valid = False
