@@ -203,6 +203,15 @@ def player_move(player_tiles):
     replace_tile(player_tiles)
     
 def is_valid_output(temp_board):
+    valid_output, is_column,is_row = is_straight(temp_board)
+    word = ""
+    word_list =  temp_board
+    if valid_output == True:
+        for i in temp_board:
+            for f in temp_board:
+                if i[1] < f[1]:
+                    pass
+def is_straight(temp_board):
     valid_output = True
     temp_row_list = []
     temp_column_list = []
@@ -245,8 +254,7 @@ def is_valid_output(temp_board):
                         
                 
     print(valid_output)
-    return valid_output,is_column,is_row
-            
+    return valid_output,is_column,is_row    
 
 
 
