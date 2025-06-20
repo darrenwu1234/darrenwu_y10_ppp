@@ -77,17 +77,18 @@ class Board:
         #print("row",is_row)
         return is_row
     def check_increment(self,temp_board,is_column,is_row):
+        correct = True
         if is_column == True:
         
             for i in range(1,len(temp_board)):
                 if temp_board[0].row + i != temp_board[i].row:
-                    is_row = False
+                    correct = False
         elif is_row == True:
             
             for i in range(1,len(temp_board)):
                 if temp_board[0].column + i != temp_board[i].column:
-                    is_column = False
-        return is_row, is_column
+                    correct = False
+        return correct
     def check_straight(self):
         row_count = 0
         
@@ -102,25 +103,34 @@ class Board:
                 column_count += 1
             row_count += 1
         
-        a1 = False
-        a2 = False
+    
         if self.check_same_column(self.temp_board) == True:
             self.temp_board.sort(key=lambda x: x.row)
-            a1, a2 = self.check_increment(self.temp_board,True,False)
+            correct = self.check_increment(self.temp_board,True,False)
         elif self.check_same_row(self.temp_board) == True:
             self.temp_board.sort(key=lambda x: x.column)
-            a1, a2 = self.check_increment(self.temp_board,False,True)
-        if a1 == True or a2 == True:
+            correct = self.check_increment(self.temp_board,False,True)
+        if correct == True:
             self.valid_output = self.valid_word()
         else:
             self.valid_output = False
+            word = ""
+            for i in self.temp_board:
+                word += i.piece
+                
+                self.word_score += i.value
+                print(f"{i.piece} - {i.value}")
+            #print('NOOONOO')
     def valid_word(self):
         word = ""
         self.word_score = 0
         for i in self.temp_board:
             word += i.piece
+            
             self.word_score += i.value
-            print(word)
+            print(f"{i.piece} - {i.value}")
+        print(f"Current word - {word}")
+        print(f"Current word score - {self.word_score}")
         if word in game.dictionary_set:
             valid_output = True
         else:
@@ -147,17 +157,23 @@ class Piece_and_Position:
         self.column = column
     
 class Inputs:
-    def __init__(self,is_submit = None):
+    def __init__(self,is_submit = None,move_type = None):
         self.is_submit = False
+        self.move_type = move_type
     def ask_move_type(self):
         move_type_valid = False
         while move_type_valid == False:
             move_type = input("What move type do you want? \n Enter 1 to move a tile on your rack to the board \n Enter 2 to move a tile on the rack to a different square on the rack\n Enter 3 to move a tile on the board to a different square on the board\n Enter 4 to move a tile on the board to a position on your rack\n Enter 'S' to submit your word\n Enter 'I' to see information")
             if move_type not in ['1','2','3','4'] and move_type.upper() not in ['S','I']:
                 print("Move type invalid, please enter a valid input")
+                
             else:
-                move_type_valid == True
-                return move_type
+                if move_type.upper() == "S" and game.perm_board.valid_output == False:
+                    print("Word invalid, cannot submit, please enter a valid input")
+                else:
+                    move_type_valid = True
+                    return move_type
+                
     def get_origin(self,move_type):  
         valid_move = False
         if move_type == "1" or move_type == "2":
@@ -218,23 +234,25 @@ class Inputs:
 
 
     def perform_move_type(self):
-        move_type = self.ask_move_type()
+        self.move_type = self.ask_move_type()
         
-        if move_type.upper() != "S" and move_type.upper() != "I":
+        if self.move_type.upper() != "S" and self.move_type.upper() != "I":
             
-            origin = self.get_origin(move_type)
-            destination = self.get_desintation(move_type)
-            game.perm_board.board = self.update_board(origin,destination,move_type,game.info.player_turn,game.perm_board.board,game.player_tiles.player_tiles)
+            origin = self.get_origin(self.move_type)
+            destination = self.get_desintation(self.move_type)
+            game.perm_board.board = self.update_board(origin,destination,self.move_type,game.info.player_turn,game.perm_board.board,game.player_tiles.player_tiles)
         #print(player_tiles.player_tiles)
         #print(player_tiles.tile_list)
-        elif move_type.upper() == "S":
+        elif self.move_type.upper() == "S":
             self.submit(game.perm_board.valid_output)
     def submit(self,valid_output):
         self.is_submit = False
         if valid_output == True:
             print("submitted")
             game.info.player_scores[game.info.player_turn] += game.perm_board.word_score
+            print(f"Player {game.info.player_turn}'s score - {game.info.player_scores[game.info.player_turn]}")
             self.is_submit = True
+            
         else:
             print("bad")
         
@@ -361,11 +379,15 @@ class Tiles:
         random_tile = tile_list.pop(randint(1,len(tile_list)-1))
         return tile_list, random_tile
     def refresh_tiles(self,tile_list):
+        player_tiles = self.player_tiles
         print(game.info.player_turn)
-        for i in self.player_tiles[game.info.player_turn]:
-            if i.piece == "None":
-                i = self.random_tile(tile_list)
-        return self.player_tiles, tile_list
+        for i in range(len(player_tiles[game.info.player_turn])):
+            if player_tiles[game.info.player_turn][i].piece == "None":
+                tile_list, random_tile = self.random_tile(tile_list)
+                player_tiles[game.info.player_turn][i] = random_tile
+                print(f"{random_tile.piece} drawn")
+                
+        return player_tiles, tile_list
 class Information:
     def __init__(self,player_turn = None,player_scores = None):
         if player_turn == None:
@@ -403,18 +425,24 @@ class Main:
     def player_move(self):    
         
         self.perm_board.perform_move()
-        self.perm_board.display_board()
-        self.player_tiles.display_tiles(self.info.player_turn)
+        print(game.input_value.move_type)
+        if game.input_value.move_type.upper() != "S":
+            self.perm_board.display_board()
+            self.player_tiles.display_tiles(self.info.player_turn)
         self.perm_board.check_straight()
     def player_turn(self):
-        self.perm_board.display_board()
+        print(f"Player {game.info.player_turn +1}'s Turn!")
         
+        self.perm_board.display_board()
+            
         self.player_tiles.display_tiles(self.info.player_turn)
         while game.input_value.is_submit != True:
             game.player_move()
         else:
-            print("yay")
             game.player_tiles.player_tiles, game.player_tiles.tile_list = game.player_tiles.refresh_tiles(game.player_tiles.tile_list)
             self.player_tiles.display_tiles(self.info.player_turn)
+            temp_input = input("Enter any key to continue")
+            game.info.player_turn += 1
 game = Main()
-game.player_turn()
+while True:
+    game.player_turn()
