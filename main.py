@@ -9,11 +9,15 @@ class EmptyPiece(Piece):
     def __init__(self):
         super().__init__("None",0)
 class Board:
-    def __init__(self,board = None):
+    def __init__(self,board = None,valid_output = None):
         if board == None:
             self.board = self.create_board()
         else:
             self.board = board
+        if valid_output == None:
+            self.valid_output = False
+        else:
+            self.valid_output = valid_output
     def create_board(self):
         board = []
         for _ in range(16):
@@ -112,10 +116,10 @@ class Board:
             self.valid_output = False
     def valid_word(self):
         word = ""
-        word_score = 0
+        self.word_score = 0
         for i in self.temp_board:
             word += i.piece
-            word_score += i.value
+            self.word_score += i.value
             print(word)
         if word in game.dictionary_set:
             valid_output = True
@@ -129,9 +133,9 @@ class Board:
             
         
     def perform_move(self):
-        input_value = Inputs()
         
-        input_value.perform_move_type()
+        
+        game.input_value.perform_move_type()
             
 
 
@@ -143,8 +147,8 @@ class Piece_and_Position:
         self.column = column
     
 class Inputs:
-    def __init__(self):
-        pass
+    def __init__(self,is_submit = None):
+        self.is_submit = False
     def ask_move_type(self):
         move_type_valid = False
         while move_type_valid == False:
@@ -226,11 +230,15 @@ class Inputs:
         elif move_type.upper() == "S":
             self.submit(game.perm_board.valid_output)
     def submit(self,valid_output):
+        self.is_submit = False
         if valid_output == True:
             print("submitted")
             game.info.player_scores[game.info.player_turn] += game.perm_board.word_score
+            self.is_submit = True
         else:
             print("bad")
+        
+
 
     def update_board(self,origin,destination,move_type,player_turn,perm_board,player_tiles):
         
@@ -365,7 +373,7 @@ class Information:
         else:
             self.player_scores = player_scores
 class Main:
-    def __init__(self,info = None,perm_board = None,player_tiles = None,dictionary_set = None):
+    def __init__(self,info = None,perm_board = None,player_tiles = None,dictionary_set = None,input_value = None):
         if info == None:
             self.info = Information()
         else:
@@ -382,6 +390,10 @@ class Main:
             self.dictionary_set= set(line.strip() for line in open('dictionary.txt'))
         else:
             self.dictionary_set = dictionary_set
+        if input_value == None:
+            self.input_value = Inputs()
+        else:
+            self.input_value = input_value
     def player_move(self):    
         
         self.perm_board.perform_move()
@@ -392,8 +404,10 @@ class Main:
         self.perm_board.display_board()
         
         self.player_tiles.display_tiles(self.info.player_turn)
-        while True:
+        while game.input_value.is_submit != True:
             game.player_move()
+        else:
+            print("yay")
             
 game = Main()
 game.player_turn()
