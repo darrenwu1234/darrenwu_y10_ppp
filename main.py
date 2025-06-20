@@ -360,6 +360,10 @@ class Tiles:
         
         random_tile = tile_list.pop(randint(1,len(tile_list)-1))
         return tile_list, random_tile
+    def refresh_tiles(self,tile_list):
+        for i in self.player_tiles[game.player_turn]:
+            if i.piece == "None":
+                i = self.random_tile(tile_list)
 class Information:
     def __init__(self,player_turn = None,player_scores = None):
         if player_turn == None:
@@ -408,7 +412,7 @@ class Main:
             game.player_move()
         else:
             print("yay")
-            game.player_tiles[player_turn].refresh()
+            game.player_tiles[self.player_turn].refresh_tiles()
             
 game = Main()
 game.player_turn()
