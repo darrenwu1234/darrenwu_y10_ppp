@@ -213,16 +213,18 @@ class Inputs:
 
     def perform_move_type(self):
         move_type = self.ask_move_type()
-        if move_type != "S" or move_type != "I":
+        
+        if move_type != "S" and move_type != "I":
+            
             origin = self.get_origin(move_type)
             destination = self.get_desintation(move_type)
             game.perm_board.board = self.update_board(origin,destination,move_type,game.info.player_turn,game.perm_board.board,game.player_tiles.player_tiles)
         #print(player_tiles.player_tiles)
         #print(player_tiles.tile_list)
         elif move_type == "S":
-            self.submit()
+            self.submit(game.perm_board.valid_output)
     def submit(self,valid_output):
-        if game.perm_board.valid_output() == True:
+        if valid_output == True:
             print("submitted")
         else:
             print("bad")
