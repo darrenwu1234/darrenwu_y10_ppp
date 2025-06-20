@@ -226,6 +226,7 @@ class Inputs:
     def submit(self,valid_output):
         if valid_output == True:
             print("submitted")
+            info.player_scores[player_turn] += word_score
         else:
             print("bad")
 
@@ -350,11 +351,13 @@ class Tiles:
         random_tile = tile_list.pop(randint(1,len(tile_list)-1))
         return tile_list, random_tile
 class Information:
-    def __init__(self,player_turn = None):
+    def __init__(self,player_turn = None,player_scores = None):
         if player_turn == None:
             self.player_turn = 0
         else:
             self.player_turn = player_turn
+        if player_scores == None:
+            self.player_scores = 2 * []
 class Main:
     def __init__(self,info = None,perm_board = None,player_tiles = None,dictionary_set = None):
         if info == None:
