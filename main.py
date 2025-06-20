@@ -364,6 +364,7 @@ class Tiles:
         for i in self.player_tiles[game.player_turn]:
             if i.piece == "None":
                 i = self.random_tile(tile_list)
+        return self.player_tiles, tile_list
 class Information:
     def __init__(self,player_turn = None,player_scores = None):
         if player_turn == None:
@@ -412,7 +413,7 @@ class Main:
             game.player_move()
         else:
             print("yay")
-            game.player_tiles[self.player_turn].refresh_tiles()
+            game.player_tiles.player_tiles, game.player_tiles.tile_list = game.player_tiles[self.player_turn].refresh_tiles(game.player_tiles.tile_list)
             
 game = Main()
 game.player_turn()
