@@ -112,8 +112,10 @@ class Board:
             self.valid_output = False
     def valid_word(self):
         word = ""
+        word_score = 0
         for i in self.temp_board:
             word += i.piece
+            word_score += i.value
             print(word)
         if word in game.dictionary_set:
             valid_output = True
@@ -226,7 +228,7 @@ class Inputs:
     def submit(self,valid_output):
         if valid_output == True:
             print("submitted")
-            info.player_scores[player_turn] += word_score
+            game.info.player_scores[game.info.player_turn] += game.perm_board.word_score
         else:
             print("bad")
 
