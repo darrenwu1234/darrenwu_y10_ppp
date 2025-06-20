@@ -408,6 +408,7 @@ class Main:
             game.player_move()
         else:
             print("yay")
+            game.player_tiles[player_turn].refresh()
             
 game = Main()
 game.player_turn()
