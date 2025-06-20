@@ -357,7 +357,11 @@ class Information:
         else:
             self.player_turn = player_turn
         if player_scores == None:
-            self.player_scores = 2 * []
+            self.player_scores = []
+            for i in range(2):
+                self.player_scores.append(0)
+        else:
+            self.player_scores = player_scores
 class Main:
     def __init__(self,info = None,perm_board = None,player_tiles = None,dictionary_set = None):
         if info == None:
