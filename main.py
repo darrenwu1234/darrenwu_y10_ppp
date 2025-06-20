@@ -107,9 +107,9 @@ class Board:
             self.temp_board.sort(key=lambda x: x.column)
             a1, a2 = self.check_increment(self.temp_board,False,True)
         if a1 == True or a2 == True:
-            valid_word = self.valid_word()
+            self.valid_output = self.valid_word()
         else:
-            print(False)
+            self.valid_output = False
     def valid_word(self):
         word = ""
         for i in self.temp_board:
@@ -172,7 +172,7 @@ class Inputs:
                 else:
                     print("Not a valid position, please enter a letter A-P followed by a number 1-16 e.g(D13)")
                     origin = input("Enter the position where you want to draw your tile from: ")
-                
+           
             
 
 
@@ -213,11 +213,20 @@ class Inputs:
 
     def perform_move_type(self):
         move_type = self.ask_move_type()
-        origin = self.get_origin(move_type)
-        destination = self.get_desintation(move_type)
-        game.perm_board.board = self.update_board(origin,destination,move_type,game.info.player_turn,game.perm_board.board,game.player_tiles.player_tiles)
+        if move_type != "S" or move_type != "I":
+            origin = self.get_origin(move_type)
+            destination = self.get_desintation(move_type)
+            game.perm_board.board = self.update_board(origin,destination,move_type,game.info.player_turn,game.perm_board.board,game.player_tiles.player_tiles)
         #print(player_tiles.player_tiles)
         #print(player_tiles.tile_list)
+        elif move_type == "S":
+            self.submit()
+    def submit(self,valid_output):
+        if game.perm_board.valid_output() == True:
+            print("submitted")
+        else:
+            print("bad")
+
     def update_board(self,origin,destination,move_type,player_turn,perm_board,player_tiles):
         
         
