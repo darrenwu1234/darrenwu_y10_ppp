@@ -413,7 +413,7 @@ class Main:
             game.player_move()
         else:
             print("yay")
-            game.player_tiles.player_tiles, game.player_tiles.tile_list = game.player_tiles[self.player_turn].refresh_tiles(game.player_tiles.tile_list)
-            
+            game.player_tiles.player_tiles, game.player_tiles.tile_list = game.player_tiles.refresh_tiles(game.player_tiles.tile_list)
+            self.player_tiles.display_tiles(self.info.player_turn)
 game = Main()
 game.player_turn()
