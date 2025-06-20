@@ -107,7 +107,7 @@ class Board:
             self.temp_board.sort(key=lambda x: x.column)
             a1, a2 = self.check_increment(self.temp_board,False,True)
         if a1 == True or a2 == True:
-            print(self.valid_word())
+            valid_word = self.valid_word()
         else:
             print(False)
     def valid_word(self):
@@ -221,7 +221,7 @@ class Inputs:
     def update_board(self,origin,destination,move_type,player_turn,perm_board,player_tiles):
         
         
-        if move_type == "1" or move_type == "2":
+        if move_type == "1":
             tile = player_tiles[player_turn][int(origin) - 1]
             player_tiles[player_turn][int(origin) - 1] = EmptyPiece()
             print(f"Tile {tile.piece} moved from {origin} to {destination.upper()}.")
@@ -229,23 +229,42 @@ class Inputs:
             column_num = destination[0]
             column_num = ord(column_num.upper()) - 65
             perm_board[row_num][column_num] = tile
-            
+        elif move_type == "2":
+            tile = player_tiles[player_turn][int(origin) - 1]
+            tile2 = player_tiles[player_turn][int(destination) - 1] 
+            player_tiles[player_turn][int(origin) - 1] = tile2
+            player_tiles[player_turn][int(destination) - 1] = tile
         elif move_type == "3":
             row_num = int(origin[1:]) - 1
             column_num = origin[0]
             column_num = ord(column_num.upper()) - 65
-            print('AIHSODFHASODFHO')
-            print(game.perm_board.temp_board)
+            #print('AIHSODFHASODFHO')
+            #print(game.perm_board.temp_board)
             for i in game.perm_board.temp_board:
-                print(i.row,i.column,row_num,column_num)
+                #print(i.row,i.column,row_num,column_num)
                 if i.row == row_num and i.column == column_num:
                     tile = i
                     
-            perm_board[row_num][column_num] = " "
+            perm_board[row_num][column_num] = EmptyPiece()
+            destination_column = ord(destination[0].upper())-65
+            print(f"Tile {tile.piece} moved from {origin} to {destination.upper()}.")
+            
+            perm_board[int(destination[1:])-1][destination_column] = tile
+        elif move_type == "4":
+            row_num = int(origin[1:]) - 1
+            column_num = origin[0]
+            column_num = ord(column_num.upper()) - 65
+            for i in game.perm_board.temp_board:
+                #print(i.row,i.column,row_num,column_num)
+                if i.row == row_num and i.column == column_num:
+                    tile = i
+                    
+            perm_board[row_num][column_num] = EmptyPiece()
             
             print(f"Tile {tile.piece} moved from {origin} to {destination.upper()}.")
-            perm_board[row_num][column_num] = tile
-            #player_tiles[player_turn][int(destination)-1] = tile
+            
+            
+            player_tiles[player_turn][int(destination)-1] = tile
         return perm_board
         
       
@@ -344,14 +363,15 @@ class Main:
         else:
             self.dictionary_set = dictionary_set
     def player_move(self):    
-        self.perm_board.display_board()
         
-        self.player_tiles.display_tiles(self.info.player_turn)
         self.perm_board.perform_move()
         self.perm_board.display_board()
         self.player_tiles.display_tiles(self.info.player_turn)
         self.perm_board.check_straight()
     def player_turn(self):
+        self.perm_board.display_board()
+        
+        self.player_tiles.display_tiles(self.info.player_turn)
         while True:
             game.player_move()
             
