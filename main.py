@@ -1,399 +1,359 @@
-from collections import Counter
-from random import randint
-dictionary_set = set(line.strip() for line in open('dictionary.txt'))
-
-value_dict = {"A" : 1, "B": 3, "C": 3, "D" : 2, "E": 1, "F": 4,"G": 2,"H": 4, "I": 1, "J": 8, "K": 5, "L": 1,"M": 3, "N": 1, "O": 1, "P": 3, "Q": 10, "R": 1, "S": 1, "T": 1, "U": 1, "V": 4, "W": 4, "X": 8, "Y": 4, "Z": 10}
-
-board = []
-for i in range(16):
-    
-    board.append([])
-for i in range(len(board)):
-    for f in range(16):
-        board[i].append(" ")
-
-def random_tile(tile_list):
- 
-    random_tile = tile_list.pop(randint(1,len(tile_list)-1))
-    return random_tile
-def draw_tiles(tile_list):
-    
-    global num_players
-    
-    for i in range(7):
-        
-        for i in range(num_players):
-            player_tiles[i].append(random_tile(tile_list))
-    return player_tiles
-
-def get_move_type(valid_output, word, word_score,player_scores,player_turn): 
-    move_type_valid = False
-    while move_type_valid == False:
-        move_type = input("What move type do you want? \n Enter 1 to move a tile on your rack to the board \n Enter 2 to move a tile on the rack to a different square on the rack\n Enter 3 to move a tile on the board to a different square on the board\n Enter 4 to move a tile on the board to a position on your rack\n Enter 5 to submit your word")
-        if move_type != "1" and move_type != "2" and move_type != "3" and move_type != "4" and move_type != "5":
-            print("Invalid input, please enter either 1,2,3 or 4: ")
-        else:
-            move_type_valid = True
-        if move_type == "5":
-            move_type_valid = submit(valid_output, word, word_score,player_scores,player_turn)
-
-    
-    return move_type 
-
- 
-
-def get_origin(move_type):  
-    valid_move = False
-    
-    
-
-  
-
-    if move_type == "1" or move_type == "2":
-        origin = input("Enter the position where you want to draw your tile from: ")
-
-        while origin not in ["1","2","3","4","5","6","7"]: 
-            
-
-            print("Not a valid position, please enter a number 1-7")
-            origin = input("Enter the position where you want to draw your tile from: ") 
-
-            
-
-        
-
-
-    elif move_type == "3" or move_type == "4":
-        origin = input("Enter the position where you want to draw your tile from: ") 
-
-        while valid_move == False:
-            if len(origin) == 2 or len(origin) == 3:
-                
-                if origin[0].upper() not in ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P"] or origin[1:] not in ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"]:
-
-                    print("Not a valid position, please enter a letter A-P followed by a number 1-16 e.g(D13)")
-                    origin = input("Enter the position where you want to draw your tile from: ") 
-                else:
-                    valid_move = True
-            else:
-                print("Not a valid position, please enter a letter A-P followed by a number 1-16 e.g(D13)")
-                origin = input("Enter the position where you want to draw your tile from: ")
-                
-            
-
-    try:
-        return origin
-    except:
+class Piece:
+    def __init__(self,piece,value):
+        self.piece = piece
+        self.value = value
+    def double_value(self):
         pass
+#class EmptyPiece(Piece):
+class EmptyPiece(Piece):
+    def __init__(self):
+        super().__init__("None",0)
+class Board:
+    def __init__(self,board = None):
+        if board == None:
+            self.board = self.create_board()
+        else:
+            self.board = board
+    def create_board(self):
+        board = []
+        for _ in range(16):
+            row = []
+            
+            for _ in range(16):
+                row.append(EmptyPiece())
+            board.append(row)
+        return board
+    def add_tile(self,row,column,piece):
+        self.board[row][column] = piece
+    def remove_tile(self,row,column):
+        print(f"{self.board[row][column].piece} removed from {row}{column}")
+        self.board[row][column] = EmptyPiece()
         
-def get_move(valid_output, word, word_score,player_scores,player_turn): 
-    
-    move_type = get_move_type(valid_output, word, word_score,player_scores,player_turn) 
-    
-    if move_type != "5":
-        origin = get_origin(move_type)
-        
-        destination = get_destination(move_type) 
-        return move_type,origin, destination
-    else:
-        return move_type, 0, 0
-    #update_board()
-def get_destination(move_type): 
-    valid_move = False
-    destination = input("Please enter where you want to place your tile") 
-    if move_type == "1" or move_type == "3":
-        while valid_move == False:
-            if len(destination) == 2 or len(destination) == 3:
+    def double_value(self,row,column):
+        piece = self.board[row][column]
+        piece.value *= 2
+        self.board[row][column] = piece
+    def display_board(self):
+        row_num = 1
+        print("   A  B  C  D  E  F  G  H  I  J  K  L  M  N  O  P")
+        for row in self.board:
+            if row_num < 10:
+                print(" " + str(row_num), end = "")
+            else:
+                print(row_num, end = "")
+            for item in row:
                 
-                if destination[0].upper() not in ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P"] or destination[1:] not in ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"]:
-                    print(destination[0])
-                    print(destination[1:])
-                    print("Not a valid position, please enter a letter A-P followed by a number 1-16 e.g(D13)")
-                    destination = input("Enter the position where you want to place your tile: ") 
+                if item.piece != "None":
+                    print(f"[{item.piece}]",end = "")
                 else:
-                    valid_move = True
-            else:
-                print("Not a valid position, please enter a letter A-P followed by a number 1-16 e.g(D13)")
-                destination = input("Enter the position where you want to place your tile: ")
-    else:
-        while valid_move == False:
-            if destination not in ["1","2","3","4","5","6","7"]:
-
-                print("Not a valid position, please input a number")
-
-                destination = input("Please enter where you want to place your tile")
-            else:
-                valid_move = True
-    try:
-        return destination
-    except:
-        pass
-global player_turn
-player_turn = 0
-def show_tiles():
-   
-    print(f"Player {player_turn + 1 }'s tiles: ")
-    print("Tile Number - 1   2   3   4   5   6   7")
-    print("              ", end = "")
-    for i in player_tiles[player_turn]:
-
-        print(i, end = "   ")      
-    print("")
-    print("Tile Values - ",end = "")
-    for i in player_tiles[player_turn]:
-        try:
-            if value_dict[i] != 10:
-                print(value_dict[i],end = "   ")
-            else:
-                print(value_dict[i],end = "  ")
-        except:
-            print(" ",end = "   ")
-    print("")
-
-def show_info():
-    
-    
-    show_tiles()
-
-def show_board():
-   
-    
-    print(f"Current board: ")
-    row_num = 1
-    print("   A  B  C  D  E  F  G  H  I  J  K  L  M  N  O  P")
-    for i in range(len(board)):
-        if row_num < 10:
-            row_char = " " + str(row_num)
-        else:
-            row_char = str(row_num)
-        print(row_char + "[" + "][".join(board[i])+"]")
-        row_num += 1
-    
-def show_move(board,player_tiles,move_type,origin,destination,temp_board):
-    if move_type == "1" or move_type == "2":
-        tile = player_tiles[player_turn][int(origin) - 1]
-        player_tiles[player_turn][int(origin) - 1] = " "
-        print(f"Tile {tile} moved from {origin} to {destination.upper()}.")
-    else:
-        row_num = int(origin[1:]) - 1
-        column_num = origin[0]
-        column_num = ord(column_num.upper()) - 65
-        tile = board[row_num][column_num]
-        board[row_num][column_num] = " "
-        temp_board.remove([tile,row_num,column_num])
-        print(f"Tile {tile} moved from {origin} to {destination.upper()}.")
-    return tile
-
-
-   
-
-
-
-def update_board(board, tile, destination,move_type,player_tiles,temp_board):
-    if move_type == "1" or move_type == "3":
-        row_num = int(destination[1:]) - 1
-        column_num = destination[0]
-        column_num = ord(column_num.upper()) - 65
-        board[row_num][column_num] = tile
-        temp_board.append([tile,row_num,column_num])
-    else:
-        
-        player_tiles[player_turn][int(destination)-1] = tile
-        
-    
-    
-def replace_tile(player_tiles):
-    
-    for i in range(len(player_tiles[player_turn])):
-        r_tile = random_tile(tile_list)
-        if player_tiles[player_turn][i] == " ":
-            player_tiles[player_turn][i] = r_tile
-            print(f"{r_tile} was drawn")
-    show_tiles()
-    
-    
-def player_move(player_tiles):
-    print(f"Player {player_turn +1}'s turn!")
-    temp_board = []
-    turn_submitted = False
-    show_board()
-    valid_output = False
-    word = ""
-    word_score = 0
-    while turn_submitted == False:
-        show_info()
-
-        move_type, origin, destination = get_move(valid_output, word, word_score,player_scores,player_turn)
-        if move_type != "5":
-
-            tile = show_move(board,player_tiles,move_type,origin,destination,temp_board)
-            update_board(board, tile, destination,move_type,player_tiles,temp_board)
-            show_board()
-            valid_output, word, word_score = is_valid_output(temp_board)
-        else:
-            turn_submitted = True
-        
-    replace_tile(player_tiles)
-
-def submit(valid_output, word, word_score,player_scores,player_turn):
-    valid_input = False
-    if valid_output == True:
-        
-        while valid_input == False:
-            is_submit = input("Do you want to submit your turn? y/n")
-            if is_submit.upper() == "YES" or is_submit.upper() == "Y" or is_submit.upper() == "YE" or is_submit.upper() == "YS" or is_submit.upper() == "YEAH":
-                is_submit = True
-                valid_input = True
+                    print("[ ]",end = "")
+            row_num+=1
                 
-            elif is_submit.upper() == "NO" or is_submit.upper() == "N" or is_submit.upper() == "NAH" or is_submit.upper() == "NOPE" or is_submit.upper() == "N O":
-                is_submit = False
-                valid_input = True
-                
-            if valid_input == False:
-                print('Invalid input, please enter y for yes, or n for no')
-    
-    else:
-        is_submit = False
-        
-        print("Word is not valid, so you cannot submit it.")
-        
-
-    if is_submit == True:
-        
-        player_scores[player_turn] = int(player_scores[player_turn][0])  + word_score
-        print(f"{word} submitted for {word_score} points, Player {player_turn + 1}'s score is now {player_scores[player_turn]}")
-        
-        return True
-    else:
-        return False
-def is_valid_output(temp_board):
-    word_score = 0
-    valid_output, is_column,is_row = is_straight(temp_board)
-    word = ""
-    
-    if valid_output == True:
-        
-        if is_column == True:
-            temp_board.sort(key=lambda x: x[1]) 
-        elif is_row == True:
-            temp_board.sort(key=lambda x: x[2])
-        print("Current word score")
+            print("")
+    def display_values(self):
+        for row in self.board:
+            for item in row:
+                print(f"[{item.value}]",end = "")
+            print("")
+    def display_value(self,row,column):
+        piece = self.board[row][column]
+        print(piece.value)
+    def check_same_column(self,temp_board):
+        is_column = True
         for i in temp_board:
-            word += i[0]
-            word_score += value_dict[i[0]]
-           
-            print(f"{i[0]} - {value_dict[i[0]]}")
-        print(f"Total word score is - {word_score}")
-        if word in dictionary_set:
+            if temp_board[0].column != i.column:
+                is_column = False
+        #print("column",is_column)
+        return is_column
+    def check_same_row(self,temp_board):
+        is_row = True
+        for i in temp_board:
+            if temp_board[0].row != i.row:
+                is_row = False
+        #print("row",is_row)
+        return is_row
+    def check_increment(self,temp_board,is_column,is_row):
+        if is_column == True:
+        
+            for i in range(1,len(temp_board)):
+                if temp_board[0].row + i != temp_board[i].row:
+                    is_row = False
+        elif is_row == True:
+            
+            for i in range(1,len(temp_board)):
+                if temp_board[0].column + i != temp_board[i].column:
+                    is_column = False
+        return is_row, is_column
+    def check_straight(self):
+        row_count = 0
+        
+        self.temp_board = []
+        for row in self.board:
+            column_count = 0
+            
+            for i in row:
+                
+                if i.value != 0:
+                    self.temp_board.append(Piece_and_Position(i.piece,i.value,row_count,column_count))
+                column_count += 1
+            row_count += 1
+        
+        a1 = False
+        a2 = False
+        if self.check_same_column(self.temp_board) == True:
+            self.temp_board.sort(key=lambda x: x.row)
+            a1, a2 = self.check_increment(self.temp_board,True,False)
+        elif self.check_same_row(self.temp_board) == True:
+            self.temp_board.sort(key=lambda x: x.column)
+            a1, a2 = self.check_increment(self.temp_board,False,True)
+        if a1 == True or a2 == True:
+            print(self.valid_word())
+        else:
+            print(False)
+    def valid_word(self):
+        word = ""
+        for i in self.temp_board:
+            word += i.piece
+            print(word)
+        if word in game.dictionary_set:
             valid_output = True
-            print("Word is valid")
         else:
             valid_output = False
-            print("Word is not valid, the word you have inputed is not a real word")
+        return valid_output
     
-    
-    else:
-        print("Word is not valid, it is not in a straight line")
-    return valid_output, word, word_score
-       
-def is_straight(temp_board):
-    valid_output = True
-    temp_row_list = []
-    temp_column_list = []
-    for i in temp_board:
-        temp_row_list.append(i[1])
-        temp_column_list.append(i[2])
-    temp_row_list.sort()
-    temp_column_list.sort()
-    g = 0
-    
-    is_row = True
-    for i in range(len(temp_row_list)):
-        if temp_row_list[0] != temp_row_list[i]:
+        
             
-            is_row = False
-    is_column = True
-    for i in range(len(temp_column_list)):
-        if temp_column_list[0] != temp_column_list[i]:
-            is_column = False
-    if is_column == True:
         
-        for f in range(1,len(temp_row_list)):
-            if valid_output == True:
-                g += 1
-                if temp_row_list[0]+g == temp_row_list[f]:
-                    valid_output = True
-                else:
-                    valid_output = False
-    elif is_row == True:
+            
         
-        for f in range(1,len(temp_column_list)):
-            if valid_output == False:
-                g += 1
-                if temp_column_list[0]+g == temp_column_list[f]:
-                    valid_output = True
-                else:
-                    valid_output = False
-    else:
-        valid_output = False    
-                        
-                
-
-    return valid_output,is_column,is_row    
+    def perform_move(self):
+        input_value = Inputs()
+        
+        input_value.perform_move_type()
+            
 
 
-
-
-
-# testing hello
-# testing gitdoc
-print("Welcome to Scrabble!")
-#get the values 
-player_scores = []
-num_players_valid = False
-while num_players_valid == False:
-    try:
-        num_players = int(input("How many players are playing? "))
-        if num_players < 2 or num_players > 4:
-            print("Invalid input, number of players must be between 2 and 4")
-        else:
-            num_players_valid = True
-    except ValueError:
-        print("Invalid input, please enter a whole number 1 - 4")
-    for i in range(num_players):
-            player_scores.append([0])
-
-
-win_condition_valid = False
-while win_condition_valid == False:
-    try:
-        win_condition = int(input("What do you want to be the win condition? \n Enter 1 for until all tiles are drawn \n Enter 2 for a certain number of moves \n Enter 3 for reaching a certain score "))
-        if win_condition < 1 or win_condition > 3:
-            print("Invalid input, number must be between 1 - 3")
-        else:
-            win_condition_valid = True
-    except ValueError:
-        print("Invalid input, please enter a whole number between 1 - 3")
-# more testing
-
-#
-counter_tile_list = Counter({"A" : 9, "B": 2, "C": 2, "D" : 4, "E": 12, "F": 2,"G": 3,"H": 2, "I": 9, "J": 1, "K": 1, "L": 4,"M": 2, "N": 6, "O": 8, "P": 2, "Q": 1, "R": 6, "S": 4, "T": 6, "U": 4, "V": 2, "W": 2, "X": 1, "Y": 2, "Z": 1})
-tile_list = []
-for i in counter_tile_list.elements():
-    tile_list.append(i)
-
-player_tiles = []
-for i in range(num_players):
-    player_tiles.append([])
-
-
-
-
-player_tiles = draw_tiles(tile_list)  
-while True:          
-    print(player_scores)
-    player_move(player_tiles)      
-    player_turn += 1
-    player_turn = player_turn % num_players
-    key_input = input("Enter any key to move on to the next turn")
+class Piece_and_Position:
+    def __init__(self,piece,value,row,column):
+        self.piece = piece
+        self.value = value
+        self.row = row
+        self.column = column
     
+class Inputs:
+    def __init__(self):
+        pass
+    def ask_move_type(self):
+        move_type_valid = False
+        while move_type_valid == False:
+            move_type = input("What move type do you want? \n Enter 1 to move a tile on your rack to the board \n Enter 2 to move a tile on the rack to a different square on the rack\n Enter 3 to move a tile on the board to a different square on the board\n Enter 4 to move a tile on the board to a position on your rack\n Enter 'S' to submit your word\n Enter 'I' to see information")
+            if move_type not in ['1','2','3','4'] and move_type.upper() not in ['S','I']:
+                print("Move type invalid, please enter a valid input")
+            else:
+                move_type_valid == True
+                return move_type
+    def get_origin(self,move_type):  
+        valid_move = False
+        if move_type == "1" or move_type == "2":
+            origin = input("Enter the position where you want to draw your tile from: ")
+            while origin not in ["1","2","3","4","5","6","7"]:
+                print("Not a valid position, please enter a number 1-7")
+                origin = input("Enter the position where you want to draw your tile from: ")
+        elif move_type == "3" or move_type == "4":
+            origin = input("Enter the position where you want to draw your tile from: ")
+            while valid_move == False:
+                if len(origin) == 2 or len(origin) == 3:
+                
+                    if origin[0].upper() not in ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P"] or origin[1:] not in ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"]:
+                        print("Not a valid position, please enter a letter A-P followed by a number 1-16 e.g(D13)")
+                        origin = input("Enter the position where you want to draw your tile from: ")
+                    else:
+                        valid_move = True
+                else:
+                    print("Not a valid position, please enter a letter A-P followed by a number 1-16 e.g(D13)")
+                    origin = input("Enter the position where you want to draw your tile from: ")
+                
+            
+
+
+        try:
+            return origin
+        except:
+            pass
+    def get_desintation(self,move_type):
+        
+        valid_move = False
+        destination = input("Please enter where you want to place your tile")
+        if move_type == "1" or move_type == "3":
+            while valid_move == False:
+                if len(destination) == 2 or len(destination) == 3:
+                
+                    if destination[0].upper() not in ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P"] or destination[1:] not in ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"]:
+                        print(destination[0])
+                        print(destination[1:])
+                        print("Not a valid position, please enter a letter A-P followed by a number 1-16 e.g(D13)")
+                        destination = input("Enter the position where you want to place your tile: ")
+                    else:
+                        valid_move = True
+                else:
+                    print("Not a valid position, please enter a letter A-P followed by a number 1-16 e.g(D13)")
+                    destination = input("Enter the position where you want to place your tile: ")
+        else:
+            while valid_move == False:
+                if destination not in ["1","2","3","4","5","6","7"]:
+                    print("Not a valid position, please input a number")
+                    destination = input("Please enter where you want to place your tile")
+                else:
+                    valid_move = True
+        try:
+            return destination
+        except:
+            pass
+
+
+    def perform_move_type(self):
+        move_type = self.ask_move_type()
+        origin = self.get_origin(move_type)
+        destination = self.get_desintation(move_type)
+        game.perm_board.board = self.update_board(origin,destination,move_type,game.info.player_turn,game.perm_board.board,game.player_tiles.player_tiles)
+        #print(player_tiles.player_tiles)
+        #print(player_tiles.tile_list)
+    def update_board(self,origin,destination,move_type,player_turn,perm_board,player_tiles):
+        
+        
+        if move_type == "1" or move_type == "2":
+            tile = player_tiles[player_turn][int(origin) - 1]
+            player_tiles[player_turn][int(origin) - 1] = EmptyPiece()
+            print(f"Tile {tile.piece} moved from {origin} to {destination.upper()}.")
+            row_num = int(destination[1:]) - 1
+            column_num = destination[0]
+            column_num = ord(column_num.upper()) - 65
+            perm_board[row_num][column_num] = tile
+            
+        elif move_type == "3":
+            row_num = int(origin[1:]) - 1
+            column_num = origin[0]
+            column_num = ord(column_num.upper()) - 65
+            print('AIHSODFHASODFHO')
+            print(game.perm_board.temp_board)
+            for i in game.perm_board.temp_board:
+                print(i.row,i.column,row_num,column_num)
+                if i.row == row_num and i.column == column_num:
+                    tile = i
+                    
+            perm_board[row_num][column_num] = " "
+            
+            print(f"Tile {tile.piece} moved from {origin} to {destination.upper()}.")
+            perm_board[row_num][column_num] = tile
+            #player_tiles[player_turn][int(destination)-1] = tile
+        return perm_board
+        
+      
+        
+            
+
+        
+class Tiles:
+    def __init__(self,player_turn,num_players,player_tiles = None):
+        self.player_turn = player_turn
+        self.num_players = num_players
+        
+        if player_tiles == None:
+            
+            tile_list, self.player_tiles = self.create_tile_list()
+        else:
+            self.player_tiles = player_tiles
+        self.tile_list = tile_list
+    def display_tiles(self,player_turn):
+        
+        
+        print(f"Player {player_turn + 1 }'s tiles: ")
+        print("Tile Number - 1   2   3   4   5   6   7")
+        print("              ", end = "")
+        for i in self.player_tiles[player_turn]:
+
+            if i.piece != "None":
+                print(i.piece, end = "   ")      
+            else:
+                print(" ", end = "   ")
+        print("")
+        print("Tile Values - ",end = "")
+        for i in self.player_tiles[player_turn]:
+            try:
+                if i.value == 0:
+                    print(" ", end = "   ")
+                elif i.value != 10:
+                    print(i.value,end = "   ")
+                else:
+                    print(i.value,end = "  ")
+            except:
+                print(" ",end = "   ")
+        print("")
+        
+    def draw_tiles(self,tile_list,player_tiles):
+        
+        for i in range(7):
+            
+            for i in range(self.num_players):
+                
+                tile_list, random_tile_object = self.random_tile(tile_list)
+                
+                player_tiles[i].append(random_tile_object)
+        return tile_list, player_tiles
+    def create_tile_list(self):
+        from collections import Counter
+        counter_tile_list = Counter({Piece("A",1) : 9, Piece("B",3): 2, Piece("C",3): 2, Piece("D",2) : 4, Piece("E",1): 12, Piece("F",4): 2,Piece("G",2): 3,Piece("H",4): 2, Piece("I",1): 9, Piece("J",8): 1, Piece("K",5): 1, Piece("L",1): 4,Piece("M",3): 2, Piece("N",1): 6, Piece("O",1): 8, Piece("P",3): 2, Piece("Q",10): 1, Piece("R",1): 6, Piece("S",1): 4, Piece("T",1): 6, Piece("U",1): 4, Piece("V",4): 2, Piece("W",4): 2, Piece("X",8): 1, Piece("Y",4): 2, Piece("Z",10): 1})
+        tile_list = []
+        for i in counter_tile_list.elements():
+            tile_list.append(i)
+        player_tiles = []
+        for i in range(self.num_players):
+            player_tiles.append([])
+        
+        tile_list, player_tiles = self.draw_tiles(tile_list,player_tiles)  
+        
+        return tile_list, player_tiles
+    
+    def random_tile(self,tile_list):
+        from random import randint
+        
+        random_tile = tile_list.pop(randint(1,len(tile_list)-1))
+        return tile_list, random_tile
+class Information:
+    def __init__(self,player_turn = None):
+        if player_turn == None:
+            self.player_turn = 0
+        else:
+            self.player_turn = player_turn
+class Main:
+    def __init__(self,info = None,perm_board = None,player_tiles = None,dictionary_set = None):
+        if info == None:
+            self.info = Information()
+        else:
+            self.info = info
+        if perm_board == None:
+            self.perm_board = Board()   
+        else:
+            self.perm_board = perm_board
+        if player_tiles == None:
+            self.player_tiles = Tiles(0,2)
+        else:
+            self.player_tiles = player_tiles
+        if dictionary_set == None:
+            self.dictionary_set= set(line.strip() for line in open('dictionary.txt'))
+        else:
+            self.dictionary_set = dictionary_set
+    def player_move(self):    
+        self.perm_board.display_board()
+        
+        self.player_tiles.display_tiles(self.info.player_turn)
+        self.perm_board.perform_move()
+        self.perm_board.display_board()
+        self.player_tiles.display_tiles(self.info.player_turn)
+        self.perm_board.check_straight()
+    def player_turn(self):
+        while True:
+            game.player_move()
+            
+game = Main()
+game.player_turn()
