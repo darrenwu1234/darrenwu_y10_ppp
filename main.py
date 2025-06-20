@@ -361,8 +361,8 @@ class Tiles:
         random_tile = tile_list.pop(randint(1,len(tile_list)-1))
         return tile_list, random_tile
     def refresh_tiles(self,tile_list):
-        print(game.player_turn)
-        for i in self.player_tiles[game.player_turn]:
+        print(game.info.player_turn)
+        for i in self.player_tiles[game.info.player_turn]:
             if i.piece == "None":
                 i = self.random_tile(tile_list)
         return self.player_tiles, tile_list
