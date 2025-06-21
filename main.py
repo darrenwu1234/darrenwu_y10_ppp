@@ -103,7 +103,7 @@ class Board:
                 column_count += 1
             row_count += 1
         
-    
+        correct = False
         if self.check_same_column(self.temp_board) == True:
             self.temp_board.sort(key=lambda x: x.row)
             correct = self.check_increment(self.temp_board,True,False)
@@ -120,7 +120,7 @@ class Board:
                 
                 self.word_score += i.value
                 print(f"{i.piece} - {i.value}")
-            #print('NOOONOO')
+            
     def valid_word(self):
         word = ""
         self.word_score = 0
@@ -136,7 +136,23 @@ class Board:
         else:
             valid_output = False
         return valid_output
-    
+    def update(self):
+        
+        for i in self.temp_board:
+            row = i.row
+            column = i.column
+            temp_Piece = Piece(i.piece,i.value)
+            self.board[row][column] = temp_Piece
+            
+    def mix(self):
+        for row in range(len(game.perm_board.board)):
+            for column in range(len(game.perm_board.board)):
+                if game.perm_board.board[row][column].piece != "None":
+                    game.total_board.board[row][column] = game.perm_board.board[row][column]
+        for row in range(len(game.user_board.board)):
+            for column in range(len(game.user_board.board)):
+                if game.user_board.board[row][column].piece != "None":
+                    game.total_board.board[row][column] = game.user_board.board[row][column]
         
             
         
@@ -401,7 +417,7 @@ class Information:
         else:
             self.player_scores = player_scores
 class Main:
-    def __init__(self,info = None,user_board = None,player_tiles = None,dictionary_set = None,input_value = None):
+    def __init__(self,info = None,user_board = None,perm_board = None, player_tiles = None,dictionary_set = None,input_value = None,total_board = None):
         if info == None:
             self.info = Information()
         else:
@@ -410,6 +426,10 @@ class Main:
             self.user_board = Board()   
         else:
             self.user_board = user_board
+        if perm_board == None:
+            self.perm_board = Board()
+        else:
+            self.perm_board = perm_board
         if player_tiles == None:
             self.player_tiles = Tiles(0,2)
         else:
@@ -422,27 +442,41 @@ class Main:
             self.input_value = Inputs()
         else:
             self.input_value = input_value
+        if total_board == None:
+            self.total_board = Board()
+        else:
+            self.total_board = total_board
     def player_move(self):    
+        #game.user_board.display_board()
         
         self.user_board.perform_move()
-        print(game.input_value.move_type)
+        game.total_board.mix()
+        #print(game.input_value.move_type)
         if game.input_value.move_type.upper() != "S":
-            self.user_board.display_board()
+            self.total_board.display_board()
             self.player_tiles.display_tiles(self.info.player_turn)
         self.user_board.check_straight()
     def player_turn(self):
+        
+        game.info.player_turn = game.info.player_turn % 2
         print(f"Player {game.info.player_turn +1}'s Turn!")
         
-        self.user_board.display_board()
-            
+        #self.user_board.display_board()
+        self.total_board.display_board()
         self.player_tiles.display_tiles(self.info.player_turn)
         while game.input_value.is_submit != True:
             game.player_move()
         else:
             game.player_tiles.player_tiles, game.player_tiles.tile_list = game.player_tiles.refresh_tiles(game.player_tiles.tile_list)
             self.player_tiles.display_tiles(self.info.player_turn)
+
             temp_input = input("Enter any key to continue")
+            #game.user_board.update()
+            
+            game.user_board = Board()
             game.info.player_turn += 1
+            game.input_value.is_submit = False
+            
 game = Main()
 while True:
     game.player_turn()
