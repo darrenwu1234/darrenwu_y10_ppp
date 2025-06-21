@@ -179,7 +179,7 @@ class Board:
                 difference -= 1
                 if game.total_board.board[row+difference][column] == "None":
                     self.left_tile = Piece(row+difference,column,game.total_board.board[row+difference][column].piece)
-                    
+                    print(self.left_tile)
     def check_connected(self):
         self.connected = False
         for row in range(len(game.user_board.board)):
