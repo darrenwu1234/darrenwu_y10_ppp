@@ -155,20 +155,30 @@ class Board:
                 if game.user_board.board[row][column].piece != "None":
                     game.total_board.board[row][column] = game.user_board.board[row][column]
     def check_valid(self):
+        self.left_tile_list = []
         self.check_connected()
         if self.connected == True:
             for row in range(len(game.total_board.board)):
                 for column in range(len(game.total_board.board[row])):
-                    if game.total_board.board[row][column].piece != None:
+                    if game.total_board.board[row][column].piece != "None":
                         self.check_orientation(row,column)
+            print("new")
+            for i in self.left_tile_list:
+                
+                print(i.piece,i.row,i.column)
+            
         else:
             print("NOT CONNECTED")
     def check_orientation(self,row,column):
-        if game.total_board.board[row+1][column].piece != "None" or game.total_board.board[row-1][column].piece != "None":
-            horizontal = True
-        else:
+        horizontal = False
+        if row - 1 < 0 and game.total_board.board[row + 1][column].piece != "None":
+            left_most = game.total_board.board[row][column]
             horizontal = False
-        if game.total_board.board[row][column+1].piece != "None" or game.total_board.board[row][column-1].piece != "None":
+        elif game.total_board.board[row][column+1].piece != "None" or game.total_board.board[row][column-1].piece != "None":
+            
+            horizontal = True
+        
+        if game.total_board.board[row+1][column].piece != "None" or game.total_board.board[row-1][column].piece != "None":
             vertical = True
         else:
             vertical = False
@@ -177,13 +187,34 @@ class Board:
             difference = 0
             while found == False:
                 difference -= 1
-                try:
-                    if game.total_board.board[row+difference][column] == "None":
-                        self.left_tile = Piece(row+difference,column,game.total_board.board[row+difference][column].piece)
-                        print(self.left_tile)
-                        found = True
-                except:
-                    pass
+                #print("valid stuff")
+                #print(game.total_board.board[row][column].piece,row,column)
+                if column + difference <0:
+                    difference += 1
+                    temp_tile = game.total_board.board[row][column+difference+1]
+                    self.left_tile = Piece_and_Position(temp_tile.piece,temp_tile.value,row,column+difference+1)
+                    found = True
+                elif game.total_board.board[row][column+difference].piece == "None":
+                    temp_tile = game.total_board.board[row][column+difference+1]
+                    self.left_tile = Piece_and_Position(temp_tile.piece,temp_tile.value,row,column+difference+1)
+                    
+                    found = True
+                    #print("its true")
+                    #print(found)
+            print(self.left_tile.piece)
+            #print(self.left_tile_list)
+            if self.left_tile_list == []:
+                self.left_tile_list.append(self.left_tile)
+            else:
+                duplicate = False
+                for i in self.left_tile_list:
+                    if self.left_tile.row == i.row and self.left_tile.column == i.column:
+                        duplicate = True
+                if duplicate == False:     
+                    self.left_tile_list.append(self.left_tile)
+            
+                
+        
     def check_connected(self):
         self.connected = False
         for row in range(len(game.user_board.board)):
