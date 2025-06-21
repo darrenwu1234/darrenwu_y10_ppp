@@ -168,7 +168,7 @@ class Inputs:
                 print("Move type invalid, please enter a valid input")
                 
             else:
-                if move_type.upper() == "S" and game.perm_board.valid_output == False:
+                if move_type.upper() == "S" and game.user_board.valid_output == False:
                     print("Word invalid, cannot submit, please enter a valid input")
                 else:
                     move_type_valid = True
@@ -240,16 +240,16 @@ class Inputs:
             
             origin = self.get_origin(self.move_type)
             destination = self.get_desintation(self.move_type)
-            game.perm_board.board = self.update_board(origin,destination,self.move_type,game.info.player_turn,game.perm_board.board,game.player_tiles.player_tiles)
+            game.user_board.board = self.update_board(origin,destination,self.move_type,game.info.player_turn,game.user_board.board,game.player_tiles.player_tiles)
         #print(player_tiles.player_tiles)
         #print(player_tiles.tile_list)
         elif self.move_type.upper() == "S":
-            self.submit(game.perm_board.valid_output)
+            self.submit(game.user_board.valid_output)
     def submit(self,valid_output):
         self.is_submit = False
         if valid_output == True:
             print("submitted")
-            game.info.player_scores[game.info.player_turn] += game.perm_board.word_score
+            game.info.player_scores[game.info.player_turn] += game.user_board.word_score
             print(f"Player {game.info.player_turn}'s score - {game.info.player_scores[game.info.player_turn]}")
             self.is_submit = True
             
@@ -258,7 +258,7 @@ class Inputs:
         
 
 
-    def update_board(self,origin,destination,move_type,player_turn,perm_board,player_tiles):
+    def update_board(self,origin,destination,move_type,player_turn,user_board,player_tiles):
         
         
         if move_type == "1":
