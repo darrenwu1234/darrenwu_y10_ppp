@@ -181,6 +181,7 @@ class Board:
                     if game.total_board.board[row+difference][column] == "None":
                         self.left_tile = Piece(row+difference,column,game.total_board.board[row+difference][column].piece)
                         print(self.left_tile)
+                        found = True
                 except:
                     pass
     def check_connected(self):
