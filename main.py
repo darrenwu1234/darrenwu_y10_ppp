@@ -488,8 +488,11 @@ class Main:
         game.info.player_turn = game.info.player_turn % 2
         print(f"Player {game.info.player_turn +1}'s Turn!")
         
-        #self.user_board.display_board()
+        print("total board")
         self.total_board.display_board()
+        print("perm board")
+        self.perm_board.display_board()
+        print("user")
         self.player_tiles.display_tiles(self.info.player_turn)
         while game.input_value.is_submit != True:
             game.player_move()
