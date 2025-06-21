@@ -153,6 +153,24 @@ class Board:
             for column in range(len(game.user_board.board)):
                 if game.user_board.board[row][column].piece != "None":
                     game.total_board.board[row][column] = game.user_board.board[row][column]
+    def check_valid(self):
+        self.connected = False
+        for row in range(len(game.user_board.board)):
+            for column in range(len(game.user_board.board[row])):
+                if game.user_board.board[row][column].piece != "None":
+                    for difference in range(-1,2,2):
+                        if game.perm_board.board[row+difference][column].piece != "None":
+                            self.connected = True
+                        if game.perm_board.board[row][column+difference].piece != "None":
+                            self.connected = True
+        
+    def dupe_board(self):
+        for row in range(len(game.total_board.board)):
+            for column in range(len(game.total_board.board[row])):
+                self.board[row][column] = game.total_board.board[row][column]
+
+
+        
         
             
         
@@ -448,14 +466,23 @@ class Main:
             self.total_board = total_board
     def player_move(self):    
         #game.user_board.display_board()
-        
+        game.total_board.mix()
         self.user_board.perform_move()
         game.total_board.mix()
+        
+        
         #print(game.input_value.move_type)
         if game.input_value.move_type.upper() != "S":
+            print("total board")
             self.total_board.display_board()
+            print("perm board")
+            self.perm_board.display_board()
+            print("user")
+            self.user_board.display_board()
             self.player_tiles.display_tiles(self.info.player_turn)
         self.user_board.check_straight()
+        self.perm_board.check_valid()
+        print(game.perm_board.connected)
     def player_turn(self):
         
         game.info.player_turn = game.info.player_turn % 2
@@ -471,8 +498,8 @@ class Main:
             self.player_tiles.display_tiles(self.info.player_turn)
 
             temp_input = input("Enter any key to continue")
-            #game.user_board.update()
-            
+            game.perm_board.dupe_board()
+            #game.perm_board.display_board()
             game.user_board = Board()
             game.info.player_turn += 1
             game.input_value.is_submit = False
