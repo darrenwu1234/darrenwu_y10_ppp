@@ -466,7 +466,7 @@ class Main:
             self.total_board = total_board
     def player_move(self):    
         #game.user_board.display_board()
-        game.total_board.mix()
+        #game.total_board.mix()
         self.user_board.perform_move()
         game.total_board.mix()
         
