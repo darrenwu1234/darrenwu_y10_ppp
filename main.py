@@ -155,6 +155,25 @@ class Board:
                 if game.user_board.board[row][column].piece != "None":
                     game.total_board.board[row][column] = game.user_board.board[row][column]
     def check_valid(self):
+        self.check_connected()
+        if self.connected == True:
+            for row in range(len(game.total_board.board)):
+                for column in range(len(game.total_board.board[row])):
+                    if game.total_board.board[row][column].piece != None:
+                        self.check_orientation(row,column)
+        else:
+            print("NOT CONNECTED")
+    def check_orientation(self,row,column):
+        if game.total_board.board[row+1][column].piece != "None" or game.total_board.board[row-1][column].piece != "None":
+            self.horizontal = True
+        else:
+            self.horizontal = False
+        if game.total_board.board[row][column+1].piece != "None" or game.total_board.board[row][column-1].piece != "None":
+            self.vertical = True
+        else:
+            self.vertical = False
+        
+    def check_connected(self):
         self.connected = False
         for row in range(len(game.user_board.board)):
             for column in range(len(game.user_board.board[row])):
@@ -163,8 +182,7 @@ class Board:
                         if game.perm_board.board[row+difference][column].piece != "None":
                             self.connected = True
                         if game.perm_board.board[row][column+difference].piece != "None":
-                            self.connected = True
-        
+                            self.connected = True                
         
     def dupe_board(self):
         for row in range(len(game.total_board.board)):
