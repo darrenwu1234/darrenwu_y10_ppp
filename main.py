@@ -165,6 +165,7 @@ class Board:
                         if game.perm_board.board[row][column+difference].piece != "None":
                             self.connected = True
         
+        
     def dupe_board(self):
         for row in range(len(game.total_board.board)):
             for column in range(len(game.total_board.board[row])):
