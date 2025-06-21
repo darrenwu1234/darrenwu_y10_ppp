@@ -145,7 +145,7 @@ class Board:
             self.board[row][column] = temp_Piece
             
     def mix(self):
-        game.total_board.board = Board()
+        game.total_board = Board()
         for row in range(len(game.perm_board.board)):
             for column in range(len(game.perm_board.board)):
                 if game.perm_board.board[row][column].piece != "None":
