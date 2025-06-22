@@ -162,14 +162,40 @@ class Board:
             for row in range(len(game.total_board.board)):
                 for column in range(len(game.total_board.board[row])):
                     if game.total_board.board[row][column].piece != "None":
-                        self.check_orientation(row,column)
+                        self.check_orientation(row,column) #finds the first tile + posititoin
+            self.check_words()
             print("left most pieces")
             for i in self.left_tile_list:
-                
                 print(i.piece,i.row,i.column)
-            
+            print("up most pieces")
+            for i in self.up_tile_list:
+                print(i.piece,i.row,i.column)
         else:
             print("NOT CONNECTED")
+    def check_words(self):
+        for i in self.left_tile_list:
+            word = i.piece
+            found = False
+            difference = 0
+            while found == False:
+                difference += 1
+                if game.total_board.board[i.row][i.column+difference].piece != "None":
+                    word += game.total_board.board[i.row][i.column+difference].piece
+                else:
+                    found = True
+            print(word)
+        for i in self.up_tile_list:
+            word = i.piece
+            found = False
+            difference = 0
+            while found == False:
+                difference += 1
+                if game.total_board.board[i.row+difference][i.column].piece != "None":
+                    word += game.total_board.board[i.row+difference][i.column].piece
+                else:
+                    found = True
+            print(word)
+
     def check_orientation(self,row,column):
         horizontal = False
         if row - 1 < 0 and game.total_board.board[row + 1][column].piece != "None":
@@ -205,7 +231,7 @@ class Board:
                     found = True
                     #print("its true")
                     #print(found)
-            print(self.left_tile.piece)
+            #print(self.left_tile.piece)
             #print(self.left_tile_list)
             if self.left_tile_list == []:
                 self.left_tile_list.append(self.left_tile)
@@ -216,20 +242,63 @@ class Board:
                         duplicate = True
                 if duplicate == False:     
                     self.left_tile_list.append(self.left_tile)
-            
-                
+        if vertical == True:
+
+            found = False
+            difference = 0
+            while found == False:
+                difference -= 1
+                #print("valid stuff")
+                #print(game.total_board.board[row][column].piece,row,column)
+                if row + difference <0:
+                    difference += 1
+                    temp_tile = game.total_board.board[row+difference+1][column]
+                    self.up_tile = Piece_and_Position(temp_tile.piece,temp_tile.value,row+difference+1,column)
+                    found = True
+                elif game.total_board.board[row+difference][column].piece == "None":
+                    temp_tile = game.total_board.board[row+difference+1][column]
+                    self.up_tile = Piece_and_Position(temp_tile.piece,temp_tile.value,row+difference+1,column)
+                    
+                    found = True
+                    #print("its true")
+                    #print(found)
+            #print(self.left_tile.piece)
+            #print(self.left_tile_list)
+            if self.up_tile_list == []:
+                self.up_tile_list.append(self.up_tile)
+            else:
+                duplicate = False
+                for i in self.up_tile_list:
+                    if self.up_tile.row == i.row and self.up_tile.column == i.column:
+                        duplicate = True
+                if duplicate == False:     
+                    self.up_tile_list.append(self.up_tile)
+                    
         
     def check_connected(self):
         self.connected = False
         for row in range(len(game.user_board.board)):
             for column in range(len(game.user_board.board[row])):
                 if game.user_board.board[row][column].piece != "None":
+                    
                     for difference in range(-1,2,2):
                         if game.perm_board.board[row+difference][column].piece != "None":
                             self.connected = True
-                        if game.perm_board.board[row][column+difference].piece != "None":
-                            self.connected = True                
-        
+                        elif game.perm_board.board[row][column+difference].piece != "None":
+                            self.connected = True
+        if self.connected == True:                
+            for row in range(len(game.user_board.board)):
+                for column in range(len(game.user_board.board[row])):
+                    if game.user_board.board[row][column].piece != "None":
+                        temp_connected = False
+                        for difference in range(-1,2,2):
+                            if game.total_board.board[row+difference][column].piece != "None":
+                                temp_connected = True
+                            elif game.total_board.board[row][column+difference].piece != "None":
+                                temp_connected = True 
+                        if temp_connected == False:
+                            self.connected = False    
+                                    
     def dupe_board(self):
         for row in range(len(game.total_board.board)):
             for column in range(len(game.total_board.board[row])):
@@ -541,10 +610,10 @@ class Main:
         if game.input_value.move_type.upper() != "S":
             print("total board")
             self.total_board.display_board()
-            print("perm board")
-            self.perm_board.display_board()
-            print("user")
-            self.user_board.display_board()
+            #print("perm board")
+            #self.perm_board.display_board()
+            #print("user")
+            #self.user_board.display_board()
             self.player_tiles.display_tiles(self.info.player_turn)
         self.user_board.check_straight()
         self.perm_board.check_valid()
@@ -556,9 +625,9 @@ class Main:
         
         print("total board")
         self.total_board.display_board()
-        print("perm board")
-        self.perm_board.display_board()
-        print("user")
+        #print("perm board")
+        #self.perm_board.display_board()
+        #print("user")
         self.player_tiles.display_tiles(self.info.player_turn)
         while game.input_value.is_submit != True:
             game.player_move()
