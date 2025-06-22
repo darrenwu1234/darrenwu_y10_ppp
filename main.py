@@ -178,8 +178,10 @@ class Board:
         elif game.total_board.board[row][column+1].piece != "None" or game.total_board.board[row][column-1].piece != "None":
             
             horizontal = True
+        vertical = False
         if column - 1 < 0 and game.total_board.board[row][column+1].piece != "None":
-            up_most = game.total_board.board[row][column]
+            up_most = game.total_board.board[row][column+1]
+            vertical = False
         elif game.total_board.board[row+1][column].piece != "None" or game.total_board.board[row-1][column].piece != "None":
             vertical = True
         else:
