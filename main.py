@@ -330,7 +330,7 @@ class Board:
                     new_word = True
                 if game.total_board.board[i.row+difference][i.column].piece != "None":
                     temp_word_list.append(game.total_board.board[i.row+difference][i.column].piece)
-                    temp_word_score_list.append(game.total_board.board[i.row][i.column+difference].value)
+                    temp_word_score_list.append(game.total_board.board[i.row+difference][i.column].value)
                     
                 else:
                     found = True
