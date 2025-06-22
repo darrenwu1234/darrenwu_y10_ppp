@@ -344,7 +344,7 @@ class Board:
 
     def check_orientation(self,row,column):
         horizontal = False
-        if row - 1 < 0 and game.total_board.board[row + 1][column].piece != "None":
+        if column - 1 < 0 and game.total_board.board[row + 1][column].piece != "None":
             left_most = game.total_board.board[row][column]
             horizontal = True
             found = True
@@ -354,6 +354,13 @@ class Board:
             
             horizontal = True
         vertical = False
+        if column - 1 < 0 and game.total_board.board[row][column+1].piece != "None":
+            left_most = game.total_board.board[row][column]
+            vertical = True
+            found = True
+        elif column + 1 > 14 and game.total_board.board[row][column-1].piece != "None":
+            vertical = True
+        
         if column - 1 < 0 and game.total_board.board[row][column+1].piece != "None":
             up_most = game.total_board.board[row][column+1]
             vertical = False
