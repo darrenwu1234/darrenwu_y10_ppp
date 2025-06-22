@@ -114,6 +114,7 @@ class Board:
                     correct = False
         return correct
     def check_straight_second(self):
+        self.pass_over_middle = True
         row_count = 0
         
         self.temp_board = []
@@ -134,12 +135,17 @@ class Board:
             for i in range(self.temp_board[0].row,self.temp_board[-1].row):
                 if game.total_board.board[i][column].piece == "None":
                     correct = False
+                    print("word is seperated")
         elif self.check_same_row(self.temp_board) == True:
             row = self.temp_board[0].row
             self.temp_board.sort(key=lambda x: x.column)
             for i in range(self.temp_board[0].column,self.temp_board[-1].column):
                 if game.total_board.board[row][i].piece == "None":
                     correct = False
+                    print("word is seperated")
+        else:
+            correct = False
+            print("Word is not in a straight line")
 
         if correct == True:
             self.valid_output = True
@@ -150,6 +156,10 @@ class Board:
             
             
     def check_straight(self):
+        if game.user_board.board[7][7].piece == "None":
+            self.pass_over_middle = False
+        else:
+            self.pass_over_middle = True
         row_count = 0
         
         self.temp_board = []
@@ -172,19 +182,19 @@ class Board:
             correct = self.check_increment(self.temp_board,False,True)
         if correct == True:
             self.valid_word()
-            if self.valid_output == True:
-                if game.user_board.board[7][7].piece == "None":
-                    self.pass_over_middle = False
-                    self.valid_output = False
-                else:
-                    self.pass_over_middle = True
+            if self.pass_over_middle == False:
+                self.valid_output = False
+
+                
+                
+                
         else:
             self.valid_output = False
         word = ""
         for i in self.temp_board:
             word += i.piece
             
-            self.word_score += i.value
+            #self.word_score += i.value
             print(f"{i.piece} - {i.value}")
         
     def valid_word(self):
@@ -250,15 +260,16 @@ class Board:
     def check_words(self):
         self.all_correct_words = True
         self.total_word_score = 0
-        for i in self.word_list:
-            #print(i.piece)
-            if i.piece not in game.dictionary_set:
-                print(f"{i.piece} is not a word")
-                self.all_correct_words = False
+        correct = self.check_straight_second()
         
-        if self.all_correct_words == True:
-            correct = self.check_straight_second()
-            if correct == True:
+        
+        if correct == True:
+            for i in self.word_list:
+                print(i.piece)
+                if i.piece not in game.dictionary_set:
+                    print(f"{i.piece} is not a word")
+                    self.all_correct_words = False
+            if self.all_correct_words == True:
 
                 for i in self.word_list:
                     self.total_word_score += i.value
@@ -274,47 +285,60 @@ class Board:
         self.word_list = []
         for i in self.left_tile_list:
             new_word = False
-            word = i.piece
-            word_score = i.value
+            word = ""
+            word_score = 0
             found = False
-            difference = 0
+            difference = -1
+            temp_word_list = []
+            temp_word_score_list = []
             while found == False:
                 difference += 1
-                if game.user_board.board[i.row][i.column].piece != "None":
-                    new_word = True
-                elif game.user_board.board[i.row][i.column+difference].piece != "None":
+                
+                if game.user_board.board[i.row][i.column+difference].piece != "None":
                     new_word = True
                 if game.total_board.board[i.row][i.column+difference].piece != "None":
                     
-                    word += game.total_board.board[i.row][i.column+difference].piece
-                    print(game.total_board.board[i.row][i.column+difference].piece,game.total_board.board[i.row][i.column+difference].value)
-                    word_score += game.total_board.board[i.row][i.column+difference].value
+                    temp_word_list.append(game.total_board.board[i.row][i.column+difference].piece)
+                    #print(game.total_board.board[i.row][i.column+difference].piece,game.total_board.board[i.row][i.column+difference].value)
+                    temp_word_score_list.append(game.total_board.board[i.row][i.column+difference].value)
                 else:
                     found = True
             
             if new_word == True:
+                for i,f in zip(temp_word_list,temp_word_score_list):
+                    word += i
+                    word_score += f
+                    print(f"{i} - {f}")
+                    
+                
                 temp_item = Piece(word,word_score)
+                
                 self.word_list.append(temp_item)
                 #print(self.word_list)
         for i in self.up_tile_list:
             new_word = False
-            word = i.piece
-            word_score = i.value
+            word = ""
+            word_score = 0
             found = False
-            difference = 0
+            difference = -1
+            temp_word_list = []
+            temp_word_score_list = []
             while found == False:
                 difference += 1
-                if game.user_board.board[i.row][i.column].piece != "None":
-                    new_word = True
-                elif game.user_board.board[i.row+difference][i.column].piece != "None":
+                
+                if game.user_board.board[i.row+difference][i.column].piece != "None":
                     new_word = True
                 if game.total_board.board[i.row+difference][i.column].piece != "None":
-                    word += game.total_board.board[i.row+difference][i.column].piece
-                    word_score += game.total_board.board[i.row][i.column+difference].value
-                    print(game.total_board.board[i.row+difference][i.column].piece,game.total_board.board[i.row][i.column+difference].value)
+                    temp_word_list.append(game.total_board.board[i.row+difference][i.column].piece)
+                    temp_word_score_list.append(game.total_board.board[i.row][i.column+difference].value)
+                    
                 else:
                     found = True
             if new_word == True:
+                for i,f in zip(temp_word_list,temp_word_score_list):
+                    word += i
+                    word_score += f
+                    print(f"{i} - {f}")
                 temp_item = Piece(word,word_score)
                 self.word_list.append(temp_item)
 
@@ -460,7 +484,7 @@ class Inputs:
                 
             else:
                 if move_type.upper() == "S" and game.user_board.valid_output == False:
-                    if game.user_board.pass_over_middle == False:
+                    if game.total_board.pass_over_middle == False:
                         print("First word must pass over H8")
                     else:
                         print("Word invalid, cannot submit, please enter a valid input")
@@ -554,9 +578,10 @@ class Inputs:
     def submit(self,word_score):
         self.is_submit = False
         if game.user_board.valid_output == True:
-            print("submitted")
+            print("Word submitted")
+            print(word_score)
             game.info.player_scores[game.info.player_turn] += word_score
-            print(f"Player {game.info.player_turn}'s score - {game.info.player_scores[game.info.player_turn]}")
+            print(f"Player {game.info.player_turn+1}'s score - {game.info.player_scores[game.info.player_turn]}")
             self.is_submit = True
             
         else:
@@ -818,7 +843,7 @@ class Main:
             game.input_value.is_submit = True
     def player_turn(self):
         game.input_value.is_submit = False
-        game.info.player_turn = game.info.player_turn % game.input_value.num_players
+        game.info.player_turn = game.info.player_turn % game.info.num_players
         print(f"Player {game.info.player_turn +1}'s Turn!")
         
         
@@ -830,7 +855,9 @@ class Main:
         else:
             print(game.info.player_turn)
             game.player_tiles.player_tiles, game.player_tiles.tile_list = game.player_tiles.refresh_tiles(game.player_tiles.tile_list)
-            self.player_tiles.display_tiles(self.info.player_turn)
+            self.player_tiles.display_tiles(game.info.player_turn)
+            if self.info.player_scores[self.info.player_turn] >= 100 :
+                print(f"Player {game.info.player_turn} has won! They reached 100 points first.")
 
             temp_input = input("Enter any key to continue")
             game.perm_board.dupe_board()
