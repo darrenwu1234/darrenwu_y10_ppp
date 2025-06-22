@@ -346,7 +346,10 @@ class Board:
         horizontal = False
         if row - 1 < 0 and game.total_board.board[row + 1][column].piece != "None":
             left_most = game.total_board.board[row][column]
-            horizontal = False
+            horizontal = True
+            found = True
+        elif row + 1 > 14 and game.total_board.board[row-1][column].piece != "None":
+            horizontal = True
         elif game.total_board.board[row][column+1].piece != "None" or game.total_board.board[row][column-1].piece != "None":
             
             horizontal = True
