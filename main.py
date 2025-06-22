@@ -1,3 +1,6 @@
+import colorama
+from colorama import Fore
+colorama.init(autoreset = True)
 class Piece:
     def __init__(self,piece,value):
         self.piece = piece
@@ -9,7 +12,7 @@ class EmptyPiece(Piece):
     def __init__(self):
         super().__init__("None",0)
 class Board:
-    def __init__(self,board = None,valid_output = None):
+    def __init__(self,board = None,valid_output = None,temp_board = None):
         if board == None:
             self.board = self.create_board()
         else:
@@ -18,12 +21,16 @@ class Board:
             self.valid_output = False
         else:
             self.valid_output = valid_output
+        if temp_board == None:
+            self.temp_board = []
+        else:
+            self.temp_board = temp_board
     def create_board(self):
         board = []
-        for _ in range(16):
+        for _ in range(15):
             row = []
             
-            for _ in range(16):
+            for _ in range(15):
                 row.append(EmptyPiece())
             board.append(row)
         return board
@@ -39,19 +46,36 @@ class Board:
         self.board[row][column] = piece
     def display_board(self):
         row_num = 1
-        print("   A  B  C  D  E  F  G  H  I  J  K  L  M  N  O  P")
+        print("   A  B  C  D  E  F  G  H  I  J  K  L  M  N  O")
+        row_count = 0
+        
         for row in self.board:
             if row_num < 10:
                 print(" " + str(row_num), end = "")
             else:
                 print(row_num, end = "")
+            column_count = 0
             for item in row:
+                if row_count == 7 and column_count == 7:
+                    if item.piece != "None" and game.user_board.board[row_count][column_count].piece != "None":
+                        print(Fore.RED + "["+Fore.YELLOW + item.piece + Fore.RED + "]",end = "")
+                    elif item.piece != "None":
+                        print(Fore.RED + "["+Fore.RESET+item.piece+Fore.RED+"]",end = "")
+                    else:
+                        print(Fore.RED + "[ ]",end = "")
+                    
+                elif item.piece != "None" and game.user_board.board[row_count][column_count].piece != "None":
+                    print("["+Fore.YELLOW + item.piece +Fore.RESET+"]",end = "")
+                elif item.piece != "None":
+                    print("["+item.piece+"]",end = "")
                 
-                if item.piece != "None":
-                    print(f"[{item.piece}]",end = "")
+                
                 else:
                     print("[ ]",end = "")
+                column_count += 1
             row_num+=1
+            row_count += 1
+            
                 
             print("")
     def display_values(self):
@@ -89,6 +113,42 @@ class Board:
                 if temp_board[0].column + i != temp_board[i].column:
                     correct = False
         return correct
+    def check_straight_second(self):
+        row_count = 0
+        
+        self.temp_board = []
+        for row in self.board:
+            column_count = 0
+            
+            for i in row:
+                
+                if i.piece != "None":
+                    self.temp_board.append(Piece_and_Position(i.piece,i.value,row_count,column_count))
+                column_count += 1
+            row_count += 1
+        
+        correct = True
+        if self.check_same_column(self.temp_board) == True:
+            column = self.temp_board[0].column
+            self.temp_board.sort(key=lambda x: x.row)
+            for i in range(self.temp_board[0].row,self.temp_board[-1].row):
+                if game.total_board.board[i][column].piece == "None":
+                    correct = False
+        elif self.check_same_row(self.temp_board) == True:
+            row = self.temp_board[0].row
+            self.temp_board.sort(key=lambda x: x.column)
+            for i in range(self.temp_board[0].column,self.temp_board[-1].column):
+                if game.total_board.board[row][i].piece == "None":
+                    correct = False
+
+        if correct == True:
+            self.valid_output = True
+        else:
+            self.valid_output = False
+        return correct
+            
+            
+            
     def check_straight(self):
         row_count = 0
         
@@ -111,16 +171,22 @@ class Board:
             self.temp_board.sort(key=lambda x: x.column)
             correct = self.check_increment(self.temp_board,False,True)
         if correct == True:
-            self.valid_output = self.valid_word()
+            self.valid_word()
+            if self.valid_output == True:
+                if game.user_board.board[7][7].piece == "None":
+                    self.pass_over_middle = False
+                    self.valid_output = False
+                else:
+                    self.pass_over_middle = True
         else:
             self.valid_output = False
-            word = ""
-            for i in self.temp_board:
-                word += i.piece
-                
-                self.word_score += i.value
-                print(f"{i.piece} - {i.value}")
+        word = ""
+        for i in self.temp_board:
+            word += i.piece
             
+            self.word_score += i.value
+            print(f"{i.piece} - {i.value}")
+        
     def valid_word(self):
         word = ""
         self.word_score = 0
@@ -132,10 +198,10 @@ class Board:
         print(f"Current word - {word}")
         print(f"Current word score - {self.word_score}")
         if word in game.dictionary_set:
-            valid_output = True
+            self.valid_output = True
         else:
-            valid_output = False
-        return valid_output
+            self.valid_output = False
+       
     def update(self):
         
         for i in self.temp_board:
@@ -155,6 +221,19 @@ class Board:
                 if game.user_board.board[row][column].piece != "None":
                     game.total_board.board[row][column] = game.user_board.board[row][column]
     def check_valid(self):
+        row_count = 0
+        
+        self.temp_board = []
+        for row in self.board:
+            column_count = 0
+            
+            for i in row:
+                
+                if i.piece != "None":
+                    self.temp_board.append(Piece_and_Position(i.piece,i.value,row_count,column_count))
+                column_count += 1
+            row_count += 1
+        
         self.left_tile_list = []
         self.up_tile_list = []
         self.check_connected()
@@ -163,38 +242,81 @@ class Board:
                 for column in range(len(game.total_board.board[row])):
                     if game.total_board.board[row][column].piece != "None":
                         self.check_orientation(row,column) #finds the first tile + posititoin
+            self.find_words()
             self.check_words()
-            print("left most pieces")
-            for i in self.left_tile_list:
-                print(i.piece,i.row,i.column)
-            print("up most pieces")
-            for i in self.up_tile_list:
-                print(i.piece,i.row,i.column)
+            
         else:
             print("NOT CONNECTED")
     def check_words(self):
+        self.all_correct_words = True
+        self.total_word_score = 0
+        for i in self.word_list:
+            #print(i.piece)
+            if i.piece not in game.dictionary_set:
+                print(f"{i.piece} is not a word")
+                self.all_correct_words = False
+        
+        if self.all_correct_words == True:
+            correct = self.check_straight_second()
+            if correct == True:
+
+                for i in self.word_list:
+                    self.total_word_score += i.value
+                    
+                    print(i.piece,i.value)
+                print("TOTAL WORD SCORE")
+
+                print(self.total_word_score)
+                game.user_board.word_score = self.total_word_score
+                
+
+    def find_words(self):
+        self.word_list = []
         for i in self.left_tile_list:
+            new_word = False
             word = i.piece
+            word_score = i.value
             found = False
             difference = 0
             while found == False:
                 difference += 1
+                if game.user_board.board[i.row][i.column].piece != "None":
+                    new_word = True
+                elif game.user_board.board[i.row][i.column+difference].piece != "None":
+                    new_word = True
                 if game.total_board.board[i.row][i.column+difference].piece != "None":
+                    
                     word += game.total_board.board[i.row][i.column+difference].piece
+                    print(game.total_board.board[i.row][i.column+difference].piece,game.total_board.board[i.row][i.column+difference].value)
+                    word_score += game.total_board.board[i.row][i.column+difference].value
                 else:
                     found = True
-            print(word)
+            
+            if new_word == True:
+                temp_item = Piece(word,word_score)
+                self.word_list.append(temp_item)
+                #print(self.word_list)
         for i in self.up_tile_list:
+            new_word = False
             word = i.piece
+            word_score = i.value
             found = False
             difference = 0
             while found == False:
                 difference += 1
+                if game.user_board.board[i.row][i.column].piece != "None":
+                    new_word = True
+                elif game.user_board.board[i.row+difference][i.column].piece != "None":
+                    new_word = True
                 if game.total_board.board[i.row+difference][i.column].piece != "None":
                     word += game.total_board.board[i.row+difference][i.column].piece
+                    word_score += game.total_board.board[i.row][i.column+difference].value
+                    print(game.total_board.board[i.row+difference][i.column].piece,game.total_board.board[i.row][i.column+difference].value)
                 else:
                     found = True
-            print(word)
+            if new_word == True:
+                temp_item = Piece(word,word_score)
+                self.word_list.append(temp_item)
 
     def check_orientation(self,row,column):
         horizontal = False
@@ -338,7 +460,13 @@ class Inputs:
                 
             else:
                 if move_type.upper() == "S" and game.user_board.valid_output == False:
-                    print("Word invalid, cannot submit, please enter a valid input")
+                    if game.user_board.pass_over_middle == False:
+                        print("First word must pass over H8")
+                    else:
+                        print("Word invalid, cannot submit, please enter a valid input")
+                elif move_type.upper() == "I":
+                    for i in range(len(game.info.player_scores)):
+                        print(f"Player {i+1}'s score - {game.info.player_scores[i]}")
                 else:
                     move_type_valid = True
                     return move_type
@@ -355,13 +483,13 @@ class Inputs:
             while valid_move == False:
                 if len(origin) == 2 or len(origin) == 3:
                 
-                    if origin[0].upper() not in ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P"] or origin[1:] not in ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"]:
-                        print("Not a valid position, please enter a letter A-P followed by a number 1-16 e.g(D13)")
+                    if origin[0].upper() not in ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"] or origin[1:] not in ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"]:
+                        print("Not a valid position, please enter a letter A-P followed by a number 1-15 e.g(D13)")
                         origin = input("Enter the position where you want to draw your tile from: ")
                     else:
                         valid_move = True
                 else:
-                    print("Not a valid position, please enter a letter A-P followed by a number 1-16 e.g(D13)")
+                    print("Not a valid position, please enter a letter A-P followed by a number 1-15 e.g(D13)")
                     origin = input("Enter the position where you want to draw your tile from: ")
            
             
@@ -379,15 +507,14 @@ class Inputs:
             while valid_move == False:
                 if len(destination) == 2 or len(destination) == 3:
                 
-                    if destination[0].upper() not in ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P"] or destination[1:] not in ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16"]:
-                        print(destination[0])
-                        print(destination[1:])
-                        print("Not a valid position, please enter a letter A-P followed by a number 1-16 e.g(D13)")
+                    if destination[0].upper() not in ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O"] or destination[1:] not in ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"]:
+                        
+                        print("Not a valid position, please enter a letter A-P followed by a number 1-15 e.g(D13)")
                         destination = input("Enter the position where you want to place your tile: ")
                     else:
                         valid_move = True
                 else:
-                    print("Not a valid position, please enter a letter A-P followed by a number 1-16 e.g(D13)")
+                    print("Not a valid position, please enter a letter A-P followed by a number 1-15 e.g(D13)")
                     destination = input("Enter the position where you want to place your tile: ")
         else:
             while valid_move == False:
@@ -406,19 +533,29 @@ class Inputs:
         self.move_type = self.ask_move_type()
         
         if self.move_type.upper() != "S" and self.move_type.upper() != "I":
-            
+            self.submitted = False
             origin = self.get_origin(self.move_type)
             destination = self.get_desintation(self.move_type)
-            game.user_board.board = self.update_board(origin,destination,self.move_type,game.info.player_turn,game.user_board.board,game.player_tiles.player_tiles)
+            self.update_board(origin,destination)
+            while self.submitted == False:
+                self.move_type = self.ask_move_type()
+                if self.move_type.upper() != "S" and self.move_type.upper() != "I":
+                    origin = self.get_origin(self.move_type)
+                    destination = self.get_desintation(self.move_type)
+                    
+                    self.update_board(origin,destination)
+                elif self.move_type.upper() == "S":
+                    self.submit(game.user_board.word_score)
+                    self.submitted = True
         #print(player_tiles.player_tiles)
         #print(player_tiles.tile_list)
         elif self.move_type.upper() == "S":
-            self.submit(game.user_board.valid_output)
-    def submit(self,valid_output):
+            self.submit(game.user_board.word_score)
+    def submit(self,word_score):
         self.is_submit = False
-        if valid_output == True:
+        if game.user_board.valid_output == True:
             print("submitted")
-            game.info.player_scores[game.info.player_turn] += game.user_board.word_score
+            game.info.player_scores[game.info.player_turn] += word_score
             print(f"Player {game.info.player_turn}'s score - {game.info.player_scores[game.info.player_turn]}")
             self.is_submit = True
             
@@ -427,54 +564,78 @@ class Inputs:
         
 
 
-    def update_board(self,origin,destination,move_type,player_turn,user_board,player_tiles):
+    def update_board(self,origin,destination):
         
         
-        if move_type == "1":
-            tile = player_tiles[player_turn][int(origin) - 1]
-            player_tiles[player_turn][int(origin) - 1] = EmptyPiece()
-            print(f"Tile {tile.piece} moved from {origin} to {destination.upper()}.")
+        if self.move_type == "1":
+            tile = game.player_tiles.player_tiles[game.info.player_turn][int(origin) - 1]
             row_num = int(destination[1:]) - 1
             column_num = destination[0]
             column_num = ord(column_num.upper()) - 65
-            user_board[row_num][column_num] = tile
-        elif move_type == "2":
-            tile = player_tiles[player_turn][int(origin) - 1]
-            tile2 = player_tiles[player_turn][int(destination) - 1] 
-            player_tiles[player_turn][int(origin) - 1] = tile2
-            player_tiles[player_turn][int(destination) - 1] = tile
-        elif move_type == "3":
+            if tile.piece == "None":
+                print("You cannot move an empty tile.")
+                self.submitted = False
+            elif game.user_board.board[row_num][column_num].piece != "None":
+                print("You cannot move a tile onto another tile.")
+                self.submitted = False
+            else:
+                self.submitted = True
+                game.player_tiles.player_tiles[game.info.player_turn][int(origin) - 1] = EmptyPiece()
+                print(f"Tile {tile.piece} moved from {origin} to {destination.upper()}.")
+                game.user_board.board[row_num][column_num] = tile
+        elif self.move_type == "2":
+            tile = game.player_tiles.player_tiles[game.info.player_turn][int(origin) - 1]
+            tile2 = game.player_tiles.player_tiles[game.info.player_turn][int(destination) - 1] 
+            game.player_tiles.player_tiles[game.info.player_turn][int(origin) - 1] = tile2
+            game.player_tiles.player_tiles[game.info.player_turn][int(destination) - 1] = tile
+            self.submitted = True
+        elif self.move_type == "3":
             row_num = int(origin[1:]) - 1
             column_num = origin[0]
             column_num = ord(column_num.upper()) - 65
+            destination_column = ord(destination[0].upper())-65
             #print('AIHSODFHASODFHO')
             #print(game.user_board.temp_board)
+            tile = "None"
             for i in game.user_board.temp_board:
                 #print(i.row,i.column,row_num,column_num)
                 if i.row == row_num and i.column == column_num:
                     tile = i
-                    
-            user_board[row_num][column_num] = EmptyPiece()
-            destination_column = ord(destination[0].upper())-65
-            print(f"Tile {tile.piece} moved from {origin} to {destination.upper()}.")
+            if tile == "None":
             
-            user_board[int(destination[1:])-1][destination_column] = tile
-        elif move_type == "4":
+                print("You cannot move an empty tile.")
+                self.submitted = False
+            elif game.user_board.board[int(destination[1:])-1][destination_column].piece != "None":
+                print("You cannot move a tile onto another tile.")
+                self.submitted = False
+            else:
+                game.user_board.board[row_num][column_num] = EmptyPiece()
+                
+                self.submitted = True
+            
+                game.user_board.board[int(destination[1:])-1][destination_column] = tile
+                print(f"Tile {tile.piece} moved from {origin} to {destination.upper()}.")
+        elif self.move_type == "4":
             row_num = int(origin[1:]) - 1
             column_num = origin[0]
             column_num = ord(column_num.upper()) - 65
+            tile = "None"
             for i in game.user_board.temp_board:
                 #print(i.row,i.column,row_num,column_num)
                 if i.row == row_num and i.column == column_num:
                     tile = i
-                    
-            user_board[row_num][column_num] = EmptyPiece()
-            
-            print(f"Tile {tile.piece} moved from {origin} to {destination.upper()}.")
-            
-            
-            player_tiles[player_turn][int(destination)-1] = tile
-        return user_board
+            if tile == "None":
+                print("You cannot move an empty tile.")
+                self.submitted = False
+            elif game.player_tiles.player_tiles[game.info.player_turn][int(destination)-1].piece != "None":
+                print("You cannot move a tile onto a tile.")
+                self.submitted = False
+            else:
+                game.user_board.board[row_num][column_num] = EmptyPiece()
+                game.player_tiles.player_tiles[game.info.player_turn][int(destination)-1] = tile
+                print(f"Tile {tile.piece} moved from {origin} to {destination.upper()}.")
+                self.submitted = True
+        
         
       
         
@@ -549,7 +710,7 @@ class Tiles:
         return tile_list, random_tile
     def refresh_tiles(self,tile_list):
         player_tiles = self.player_tiles
-        print(game.info.player_turn)
+        #print(game.info.player_turn)
         for i in range(len(player_tiles[game.info.player_turn])):
             if player_tiles[game.info.player_turn][i].piece == "None":
                 tile_list, random_tile = self.random_tile(tile_list)
@@ -600,7 +761,8 @@ class Main:
         else:
             self.total_board = total_board
     def player_move(self):    
-        #game.user_board.display_board()
+        #self.total_board.display_board()
+        #self.player_tiles.display_tiles(self.info.player_turn)
         #game.total_board.mix()
         self.user_board.perform_move()
         game.total_board.mix()
@@ -608,30 +770,56 @@ class Main:
         
         #print(game.input_value.move_type)
         if game.input_value.move_type.upper() != "S":
-            print("total board")
+            
             self.total_board.display_board()
-            #print("perm board")
-            #self.perm_board.display_board()
-            #print("user")
-            #self.user_board.display_board()
             self.player_tiles.display_tiles(self.info.player_turn)
-        self.user_board.check_straight()
-        self.perm_board.check_valid()
-        print(game.perm_board.connected)
-    def player_turn(self):
+        self.user_board.check_valid()
+       
         
+    def first_turn(self):
+        game.input_value.is_submit = False
+        
+        print(f"Player {game.info.player_turn +1}'s Turn!")
+        
+        
+        self.total_board.display_board()
+        
+        self.player_tiles.display_tiles(self.info.player_turn)
+        while game.input_value.is_submit != True:
+            self.user_board.perform_move()
+            game.total_board.mix()
+            
+            
+            #print(game.input_value.move_type)
+            if game.input_value.move_type.upper() != "S":
+                
+                self.total_board.display_board()
+                self.player_tiles.display_tiles(self.info.player_turn)
+            self.user_board.check_straight()
+            #self.perm_board.check_valid()
+        else:
+            game.player_tiles.player_tiles, game.player_tiles.tile_list = game.player_tiles.refresh_tiles(game.player_tiles.tile_list)
+            self.player_tiles.display_tiles(self.info.player_turn)
+
+            temp_input = input("Enter any key to continue")
+            game.perm_board.dupe_board()
+            
+            game.user_board = Board()
+            game.info.player_turn += 1
+            game.input_value.is_submit = True
+    def player_turn(self):
+        game.input_value.is_submit = False
         game.info.player_turn = game.info.player_turn % 2
         print(f"Player {game.info.player_turn +1}'s Turn!")
         
-        print("total board")
+        
         self.total_board.display_board()
-        #print("perm board")
-        #self.perm_board.display_board()
-        #print("user")
+        
         self.player_tiles.display_tiles(self.info.player_turn)
         while game.input_value.is_submit != True:
             game.player_move()
         else:
+            print(game.info.player_turn)
             game.player_tiles.player_tiles, game.player_tiles.tile_list = game.player_tiles.refresh_tiles(game.player_tiles.tile_list)
             self.player_tiles.display_tiles(self.info.player_turn)
 
@@ -640,8 +828,11 @@ class Main:
             #game.perm_board.display_board()
             game.user_board = Board()
             game.info.player_turn += 1
-            game.input_value.is_submit = False
+            
+            game.input_value.is_submit = True
             
 game = Main()
+game.first_turn()
 while True:
+    
     game.player_turn()
