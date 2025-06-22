@@ -612,7 +612,7 @@ class Inputs:
                 self.submitted = False
             elif game.total_board.board[row_num][column_num].piece != "None":
                 print("You cannot move a tile onto another tile.")
-                self.submitted = False
+                se1lf.submitted = False
             else:
                 self.submitted = True
                 game.player_tiles.player_tiles[game.info.player_turn][int(origin) - 1] = EmptyPiece()
