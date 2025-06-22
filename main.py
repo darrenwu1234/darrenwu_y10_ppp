@@ -610,7 +610,7 @@ class Inputs:
             if tile.piece == "None":
                 print("You cannot move an empty tile.")
                 self.submitted = False
-            elif game.user_board.board[row_num][column_num].piece != "None":
+            elif game.total_board.board[row_num][column_num].piece != "None":
                 print("You cannot move a tile onto another tile.")
                 self.submitted = False
             else:
