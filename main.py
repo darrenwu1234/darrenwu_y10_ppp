@@ -635,6 +635,7 @@ class Inputs:
                 game.player_tiles.player_tiles[game.info.player_turn][int(destination)-1] = tile
                 print(f"Tile {tile.piece} moved from {origin} to {destination.upper()}.")
                 self.submitted = True
+    
         
         
       
@@ -726,7 +727,14 @@ class Information:
             self.player_turn = player_turn
         if player_scores == None:
             self.player_scores = []
-            for i in range(2):
+            valid_num_players = False
+            while valid_num_players == False:
+                self.num_players = int(input("How many players are playing?"))
+                if self.num_players < 2 or self.num_players > 4:
+                    print("Please enter a number between 2 and 4")
+                else:
+                    valid_num_players = True
+            for i in range(self.num_players):
                 self.player_scores.append(0)
         else:
             self.player_scores = player_scores
@@ -744,10 +752,7 @@ class Main:
             self.perm_board = Board()
         else:
             self.perm_board = perm_board
-        if player_tiles == None:
-            self.player_tiles = Tiles(0,2)
-        else:
-            self.player_tiles = player_tiles
+        
         if dictionary_set == None:
             self.dictionary_set= set(line.strip() for line in open('dictionary.txt'))
         else:
@@ -760,6 +765,10 @@ class Main:
             self.total_board = Board()
         else:
             self.total_board = total_board
+        if player_tiles == None:
+            self.player_tiles = Tiles(0,self.info.num_players)
+        else:
+            self.player_tiles = player_tiles
     def player_move(self):    
         #self.total_board.display_board()
         #self.player_tiles.display_tiles(self.info.player_turn)
@@ -809,7 +818,7 @@ class Main:
             game.input_value.is_submit = True
     def player_turn(self):
         game.input_value.is_submit = False
-        game.info.player_turn = game.info.player_turn % 2
+        game.info.player_turn = game.info.player_turn % game.input_value.num_players
         print(f"Player {game.info.player_turn +1}'s Turn!")
         
         
@@ -833,6 +842,7 @@ class Main:
             
 game = Main()
 game.first_turn()
+
 while True:
     
     game.player_turn()
