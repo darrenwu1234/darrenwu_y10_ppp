@@ -156,13 +156,14 @@ class Board:
                     game.total_board.board[row][column] = game.user_board.board[row][column]
     def check_valid(self):
         self.left_tile_list = []
+        self.up_tile_list = []
         self.check_connected()
         if self.connected == True:
             for row in range(len(game.total_board.board)):
                 for column in range(len(game.total_board.board[row])):
                     if game.total_board.board[row][column].piece != "None":
                         self.check_orientation(row,column)
-            print("new")
+            print("left most pieces")
             for i in self.left_tile_list:
                 
                 print(i.piece,i.row,i.column)
@@ -177,8 +178,9 @@ class Board:
         elif game.total_board.board[row][column+1].piece != "None" or game.total_board.board[row][column-1].piece != "None":
             
             horizontal = True
-        
-        if game.total_board.board[row+1][column].piece != "None" or game.total_board.board[row-1][column].piece != "None":
+        if column - 1 < 0 and game.total_board.board[row][column+1].piece != "None":
+            up_most = game.total_board.board[row][column]
+        elif game.total_board.board[row+1][column].piece != "None" or game.total_board.board[row-1][column].piece != "None":
             vertical = True
         else:
             vertical = False
