@@ -114,7 +114,7 @@ class Board:
                     correct = False
         return correct
     def check_straight_second(self):
-        self.pass_over_middle = True
+        user_board.pass_over_middle = True
         row_count = 0
         
         self.temp_board = []
