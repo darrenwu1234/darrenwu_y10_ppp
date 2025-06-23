@@ -488,8 +488,8 @@ class Inputs:
     def ask_move_type(self):
         move_type_valid = False
         while move_type_valid == False:
-            move_type = input("What move type do you want? \n Enter 1 to move a tile on your rack to the board \n Enter 2 to move a tile on the rack to a different square on the rack\n Enter 3 to move a tile on the board to a different square on the board\n Enter 4 to move a tile on the board to a position on your rack\n Enter 'S' to submit your word\n Enter 'I' to see information")
-            if move_type not in ['1','2','3','4'] and move_type.upper() not in ['S','I']:
+            move_type = input("What move type do you want? \n Enter 1 to move a tile on your rack to the board \n Enter 2 to move a tile on the rack to a different square on the rack\n Enter 3 to move a tile on the board to a different square on the board\n Enter 4 to move a tile on the board to a position on your rack\n Enter 'S' to submit your word\n Enter 'I' to see information\n Enter 'R' to replace some tiles")
+            if move_type not in ['1','2','3','4'] and move_type.upper() not in ['S','I','R']:
                 print("Move type invalid, please enter a valid input")
                 
             else:
@@ -501,7 +501,10 @@ class Inputs:
                 elif move_type.upper() == "I":
                     for i in range(len(game.info.player_scores)):
                         print(f"Player {i+1}'s score - {game.info.player_scores[i]}")
+                #elif move_type.upper() == "R":
+                    
                 else:
+                    #print("reutrned")
                     move_type_valid = True
                     return move_type
                 
@@ -565,7 +568,7 @@ class Inputs:
 
     def perform_move_type(self):
         self.move_type = self.ask_move_type()
-        
+        #print(self.move_type)
         if self.move_type.upper() != "S" and self.move_type.upper() != "I" and self.move_type.upper() != "R":
             self.submitted = False
             origin = self.get_origin(self.move_type)
@@ -582,6 +585,7 @@ class Inputs:
                     self.submit(game.user_board.word_score)
                     self.submitted = True
                 elif self.move_type.upper() == "R":
+                    print("oihoiiadfhfoisdh")
                     game.input_value.ask_replace_tiles()
                     game.player_tiles.replace_tiles()
                     self.submitted = True
@@ -589,6 +593,11 @@ class Inputs:
         #print(player_tiles.tile_list)
         elif self.move_type.upper() == "S":
             self.submit(game.user_board.word_score)
+            self.submitted = True
+        elif self.move_type.upper() == "R":
+            #print("oihoiiadfhfoisdh")
+            game.input_value.ask_replace_tiles()
+            game.player_tiles.replace_tiles()
             self.submitted = True
     def submit(self,word_score):
         self.is_submit = False
@@ -675,12 +684,15 @@ class Inputs:
                 game.player_tiles.player_tiles[game.info.player_turn][int(destination)-1] = tile
                 print(f"Tile {tile.piece} moved from {origin} to {destination.upper()}.")
                 self.submitted = True
-    def ask_replace_tiles():
+    def ask_replace_tiles(self):
         finished = False
-        replace_tile_list = []
+        self.replace_tile_list = []
         while finished == False:
-            position = input("What space do you want to replace?")
-            replace_tile_list.append(position)
+            position = input("What space do you want to replace? (Enter an empty space to finish)")
+            if position not in ['1','2','3','4','5','6','7','8','9']:
+                finished = True
+            else:
+                self.replace_tile_list.append(position)
 
 
         
@@ -786,9 +798,10 @@ class Information:
         else:
             self.player_scores = player_scores
     def replace_tiles():
-        tile_list, random_tile = self.random_tile(tile_list)
-        player_tiles[game.info.player_turn][i] = random_tile
-        print(f"{random_tile.piece} drawn")
+        for i in game.input_value.replace_tile_list:
+            game.player_tiles.tile_list, random_tile = game.player_tiles.random_tile(game.player_tiles.tile_list)
+            game.player_tiles.player_tiles[game.info.player_turn][i-1] = random_tile
+            print(f"{random_tile.piece} drawn")
                 
 
 class Main:
