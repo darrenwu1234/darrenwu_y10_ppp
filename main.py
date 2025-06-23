@@ -566,14 +566,14 @@ class Inputs:
     def perform_move_type(self):
         self.move_type = self.ask_move_type()
         
-        if self.move_type.upper() != "S" and self.move_type.upper() != "I":
+        if self.move_type.upper() != "S" and self.move_type.upper() != "I" and self.move_type.upper() != "R":
             self.submitted = False
             origin = self.get_origin(self.move_type)
             destination = self.get_desintation(self.move_type)
             self.update_board(origin,destination)
             while self.submitted == False:
                 self.move_type = self.ask_move_type()
-                if self.move_type.upper() != "S" and self.move_type.upper() != "I":
+                if self.move_type.upper() != "S" and self.move_type.upper() != "I" and self.move_type.upper() != "R":
                     origin = self.get_origin(self.move_type)
                     destination = self.get_desintation(self.move_type)
                     
@@ -581,10 +581,15 @@ class Inputs:
                 elif self.move_type.upper() == "S":
                     self.submit(game.user_board.word_score)
                     self.submitted = True
+                elif self.move_type.upper() == "R":
+                    game.input_value.ask_replace_tiles()
+                    game.player_tiles.replace_tiles()
+                    self.submitted = True
         #print(player_tiles.player_tiles)
         #print(player_tiles.tile_list)
         elif self.move_type.upper() == "S":
             self.submit(game.user_board.word_score)
+            self.submitted = True
     def submit(self,word_score):
         self.is_submit = False
         if game.user_board.valid_output == True:
@@ -612,7 +617,7 @@ class Inputs:
                 self.submitted = False
             elif game.total_board.board[row_num][column_num].piece != "None":
                 print("You cannot move a tile onto another tile.")
-                se1lf.submitted = False
+                self.submitted = False
             else:
                 self.submitted = True
                 game.player_tiles.player_tiles[game.info.player_turn][int(origin) - 1] = EmptyPiece()
@@ -670,7 +675,14 @@ class Inputs:
                 game.player_tiles.player_tiles[game.info.player_turn][int(destination)-1] = tile
                 print(f"Tile {tile.piece} moved from {origin} to {destination.upper()}.")
                 self.submitted = True
-    
+    def ask_replace_tiles():
+        finished = False
+        replace_tile_list = []
+        while finished == False:
+            position = input("What space do you want to replace?")
+            replace_tile_list.append(position)
+
+
         
         
       
@@ -773,6 +785,12 @@ class Information:
                 self.player_scores.append(0)
         else:
             self.player_scores = player_scores
+    def replace_tiles():
+        tile_list, random_tile = self.random_tile(tile_list)
+        player_tiles[game.info.player_turn][i] = random_tile
+        print(f"{random_tile.piece} drawn")
+                
+
 class Main:
     def __init__(self,info = None,user_board = None,perm_board = None, player_tiles = None,dictionary_set = None,input_value = None,total_board = None):
         if info == None:
