@@ -114,7 +114,7 @@ class Board:
                     correct = False
         return correct
     def check_straight_second(self):
-        user_board.pass_over_middle = True
+        
         row_count = 0
         
         self.temp_board = []
@@ -156,7 +156,7 @@ class Board:
             
             
     def check_straight(self):
-        if game.user_board.board[7][7].piece == "None":
+        if game.total_board.board[7][7].piece == "None":
             self.pass_over_middle = False
         else:
             self.pass_over_middle = True
