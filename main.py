@@ -918,8 +918,10 @@ class Main:
             game.info.player_turn += 1
             
             game.input_value.is_submit = True
-            
+        
 game = Main()
+
+
 game.first_turn()
 
 while game.game_finished == False:
