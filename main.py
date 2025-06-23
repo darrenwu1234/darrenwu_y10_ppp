@@ -256,7 +256,7 @@ class Board:
             self.check_words()
             
         else:
-            print("NOT CONNECTED")
+            print("Word is not connected to another tile")
     def check_words(self):
         self.all_correct_words = True
         self.total_word_score = 0
@@ -482,19 +482,23 @@ class Piece_and_Position:
         self.column = column
     
 class Inputs:
-    def __init__(self,is_submit = None,move_type = None):
+    def __init__(self,is_submit = None,move_type = None,pass_over_middle = None):
         self.is_submit = False
         self.move_type = move_type
+        if pass_over_middle == None:
+            self.pass_over_middle = False
+        else:
+            self.pass_over_middle = pass_over_middle
     def ask_move_type(self):
         move_type_valid = False
         while move_type_valid == False:
-            move_type = input("What move type do you want? \n Enter 1 to move a tile on your rack to the board \n Enter 2 to move a tile on the rack to a different square on the rack\n Enter 3 to move a tile on the board to a different square on the board\n Enter 4 to move a tile on the board to a position on your rack\n Enter 'S' to submit your word\n Enter 'I' to see information\n Enter 'R' to replace some tiles")
+            move_type = input("What move type do you want? \n Enter 1 to move a tile on your rack to the board \n Enter 2 to move a tile on the rack to a different square on the rack\n Enter 3 to move a tile on the board to a different square on the board\n Enter 4 to move a tile on the board to a position on your rack\n Enter 'S' to submit your word\n Enter 'I' to see information\n Enter 'R' to replace some tiles ")
             if move_type not in ['1','2','3','4'] and move_type.upper() not in ['S','I','R']:
                 print("Move type invalid, please enter a valid input")
                 
             else:
                 if move_type.upper() == "S" and game.user_board.valid_output == False:
-                    if game.total_board.pass_over_middle == False:
+                    if game.user_board.pass_over_middle == False:
                         print("First word must pass over H8")
                     else:
                         print("Word invalid, cannot submit, please enter a valid input")
@@ -568,7 +572,7 @@ class Inputs:
 
     def perform_move_type(self):
         self.move_type = self.ask_move_type()
-        #print(self.move_type)
+        
         if self.move_type.upper() != "S" and self.move_type.upper() != "I" and self.move_type.upper() != "R":
             self.submitted = False
             origin = self.get_origin(self.move_type)
@@ -585,19 +589,19 @@ class Inputs:
                     self.submit(game.user_board.word_score)
                     self.submitted = True
                 elif self.move_type.upper() == "R":
-                    print("oihoiiadfhfoisdh")
+                    
                     game.input_value.ask_replace_tiles()
                     game.player_tiles.replace_tiles()
                     self.submitted = True
-        #print(player_tiles.player_tiles)
-        #print(player_tiles.tile_list)
+        
         elif self.move_type.upper() == "S":
             self.submit(game.user_board.word_score)
             self.submitted = True
         elif self.move_type.upper() == "R":
-            #print("oihoiiadfhfoisdh")
+            
             game.input_value.ask_replace_tiles()
             game.player_tiles.replace_tiles()
+            self.is_submit = True
             self.submitted = True
     def submit(self,word_score):
         self.is_submit = False
@@ -692,6 +696,7 @@ class Inputs:
             if position not in ['1','2','3','4','5','6','7','8','9']:
                 finished = True
             else:
+                position = int(position)
                 self.replace_tile_list.append(position)
 
 
@@ -778,6 +783,11 @@ class Tiles:
                 print(f"{random_tile.piece} drawn")
                 
         return player_tiles, tile_list
+    def replace_tiles(self):
+        for i in game.input_value.replace_tile_list:
+            game.player_tiles.tile_list, random_tile = game.player_tiles.random_tile(game.player_tiles.tile_list)
+            game.player_tiles.player_tiles[game.info.player_turn][i-1] = random_tile
+            print(f"{random_tile.piece} drawn")
 class Information:
     def __init__(self,player_turn = None,player_scores = None):
         if player_turn == None:
@@ -797,15 +807,11 @@ class Information:
                 self.player_scores.append(0)
         else:
             self.player_scores = player_scores
-    def replace_tiles():
-        for i in game.input_value.replace_tile_list:
-            game.player_tiles.tile_list, random_tile = game.player_tiles.random_tile(game.player_tiles.tile_list)
-            game.player_tiles.player_tiles[game.info.player_turn][i-1] = random_tile
-            print(f"{random_tile.piece} drawn")
+    
                 
 
 class Main:
-    def __init__(self,info = None,user_board = None,perm_board = None, player_tiles = None,dictionary_set = None,input_value = None,total_board = None):
+    def __init__(self,info = None,user_board = None,perm_board = None, player_tiles = None,dictionary_set = None,input_value = None,total_board = None,game_finished = None):
         if info == None:
             self.info = Information()
         else:
@@ -835,6 +841,11 @@ class Main:
             self.player_tiles = Tiles(0,self.info.num_players)
         else:
             self.player_tiles = player_tiles
+        if game_finished == None:
+            self.game_finished = False
+        else:
+            self.game_finished = game_finished
+        
     def player_move(self):    
         #self.total_board.display_board()
         #self.player_tiles.display_tiles(self.info.player_turn)
@@ -865,23 +876,23 @@ class Main:
             game.total_board.mix()
             
             
-            #print(game.input_value.move_type)
-            if game.input_value.move_type.upper() != "S":
+
+            if game.input_value.move_type.upper() != "S" and game.input_value.move_type.upper() != "R":
                 
                 self.total_board.display_board()
                 self.player_tiles.display_tiles(self.info.player_turn)
-            self.user_board.check_straight()
-            #self.perm_board.check_valid()
-        else:
-            game.player_tiles.player_tiles, game.player_tiles.tile_list = game.player_tiles.refresh_tiles(game.player_tiles.tile_list)
-            self.player_tiles.display_tiles(self.info.player_turn)
+                self.user_board.check_straight()
 
-            temp_input = input("Enter any key to continue")
-            game.perm_board.dupe_board()
-            
-            game.user_board = Board()
-            game.info.player_turn += 1
-            game.input_value.is_submit = True
+            else:
+                game.player_tiles.player_tiles, game.player_tiles.tile_list = game.player_tiles.refresh_tiles(game.player_tiles.tile_list)
+                self.player_tiles.display_tiles(self.info.player_turn)
+
+                temp_input = input("Enter any key to continue")
+                game.perm_board.dupe_board()
+                
+                game.user_board = Board()
+                game.info.player_turn += 1
+                game.input_value.is_submit = True
     def player_turn(self):
         game.input_value.is_submit = False
         game.info.player_turn = game.info.player_turn % game.info.num_players
@@ -899,7 +910,7 @@ class Main:
             self.player_tiles.display_tiles(game.info.player_turn)
             if self.info.player_scores[self.info.player_turn] >= 100 :
                 print(f"Player {game.info.player_turn} has won! They reached 100 points first.")
-
+                self.game_finished = True
             temp_input = input("Enter any key to continue")
             game.perm_board.dupe_board()
             #game.perm_board.display_board()
@@ -911,6 +922,7 @@ class Main:
 game = Main()
 game.first_turn()
 
-while True:
+while game.game_finished == False:
     
     game.player_turn()
+    
