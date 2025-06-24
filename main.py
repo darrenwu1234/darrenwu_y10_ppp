@@ -802,11 +802,15 @@ class Information:
             self.player_scores = []
             valid_num_players = False
             while valid_num_players == False:
-                self.num_players = int(input("How many players are playing?"))
-                if self.num_players < 2 or self.num_players > 4:
+                
+                try:
+                    self.num_players = int(input("How many players are playing?"))
+                    if self.num_players < 2 or self.num_players > 4:
+                        print("Please enter a number between 2 and 4")
+                    else:
+                        valid_num_players = True
+                except:
                     print("Please enter a number between 2 and 4")
-                else:
-                    valid_num_players = True
             for i in range(self.num_players):
                 self.player_scores.append(0)
         else:
