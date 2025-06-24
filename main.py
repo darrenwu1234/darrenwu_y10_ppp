@@ -157,9 +157,9 @@ class Board:
             
     def check_straight(self):
         if game.total_board.board[7][7].piece == "None":
-            game.user_board.pass_over_middle = False
+            self.pass_over_middle = False
         else:
-            game.user_board.pass_over_middle = True
+            self.pass_over_middle = True
         row_count = 0
         
         self.temp_board = []
@@ -260,7 +260,7 @@ class Board:
     def check_words(self):
         self.all_correct_words = True
         self.total_word_score = 0
-        correct = game.total_board.check_straight_second()
+        correct = self.check_straight_second()
         
         
         if correct == True:
@@ -492,28 +492,27 @@ class Inputs:
     def ask_move_type(self):
         move_type_valid = False
         while move_type_valid == False:
-            move_type = input("What move type do you want? \n Enter 1 to move a tile on your rack to the board \n Enter 2 to move a tile on the rack to a different square on the rack\n Enter 3 to move a tile on the board to a different square on the board\n Enter 4 to move a tile on the board to a position on your rack\n Enter 'S' to submit your word\n Enter 'I' to see information\n Enter 'R' to replace some tiles ")
+            move_type = input("What move type do you want? \n Enter 1 to move a tile on your rack to the board \n Enter 2 to move a tile on the rack to a different square on the rack\n Enter 3 to move a tile on the board to a different square on the board\n Enter 4 to move a tile on the board to a position on your rack\n Enter 'S' to submit your word\n Enter 'I' to see information\n Enter 'R' to replace some tiles \n")
             if move_type not in ['1','2','3','4'] and move_type.upper() not in ['S','I','R']:
-                import os
-                os.system('cls' if os.name == 'nt' else 'clear')
                 
+                import os    
+                os.system('cls' if os.name == 'nt' else 'clear')
                 game.total_board.display_board()
                 game.player_tiles.display_tiles(game.info.player_turn)
                 print("Move type invalid, please enter a valid input")
-                
             else:
                 if move_type.upper() == "S" and game.user_board.valid_output == False:
                     if game.user_board.pass_over_middle == False:
                         print("First word must pass over H8")
                     else:
                         print("Word invalid, cannot submit, please enter a valid input")
-                        
                 elif move_type.upper() == "I":
                     for i in range(len(game.info.player_scores)):
                         print(f"Player {i+1}'s score - {game.info.player_scores[i]}")
                 #elif move_type.upper() == "R":
                     
                 else:
+                    #print("reutrned")
                     move_type_valid = True
                     return move_type
                 
@@ -852,6 +851,10 @@ class Main:
             self.game_finished = game_finished
         
     def player_move(self):    
+        if game.total_board.board[7][7].piece == "None":
+            game.user_board.pass_over_middle = False
+        else:
+            game.user_board.pass_over_middle = True
         #self.total_board.display_board()
         #self.player_tiles.display_tiles(self.info.player_turn)
         #game.total_board.mix()
@@ -868,6 +871,10 @@ class Main:
        
         
     def first_turn(self):
+        if game.total_board.board[7][7].piece == "None":
+            game.user_board.pass_over_middle = False
+        else:
+            game.user_board.pass_over_middle = True
         game.input_value.is_submit = False
         
         print(f"Player {game.info.player_turn +1}'s Turn!")
@@ -877,7 +884,6 @@ class Main:
         
         self.player_tiles.display_tiles(self.info.player_turn)
         while game.input_value.is_submit != True:
-            self.user_board.check_straight()
             self.user_board.perform_move()
             game.total_board.mix()
             
@@ -924,12 +930,9 @@ class Main:
             game.info.player_turn += 1
             
             game.input_value.is_submit = True
-        
+import os        
 game = Main()
-
-
 game.first_turn()
-import os
 os.system('cls' if os.name == 'nt' else 'clear')
 while game.game_finished == False:
     
