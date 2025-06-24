@@ -617,7 +617,7 @@ class Inputs:
             self.is_submit = True
             
         else:
-            print("bad")
+            print("Not a valid word")
         
 
 
