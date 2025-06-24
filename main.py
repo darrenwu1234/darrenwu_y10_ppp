@@ -819,7 +819,7 @@ class Information:
                 
 
 class Main:
-    def __init__(self,info = None,user_board = None,perm_board = None, player_tiles = None,dictionary_set = None,input_value = None,total_board = None,game_finished = None):
+    def __init__(self,info = None,user_board = None,perm_board = None, player_tiles = None,dictionary_set = None,input_value = None,total_board = None,game_finished = None,first_turn = None):
         if info == None:
             self.info = Information()
         else:
@@ -853,6 +853,10 @@ class Main:
             self.game_finished = False
         else:
             self.game_finished = game_finished
+        if first_turn == None:
+            self.first_turn = True
+        else:
+            self.first_turn = first_turn
         
     def player_move(self):    
         if game.total_board.board[7][7].piece == "None":
@@ -871,7 +875,10 @@ class Main:
             
             self.total_board.display_board()
             self.player_tiles.display_tiles(self.info.player_turn)
-        self.user_board.check_valid()
+        if self.first_turn == True:
+            self.user_board.check_straight()
+        else:
+            self.user_board.check_valid()
        
         
     def first_turn(self):
