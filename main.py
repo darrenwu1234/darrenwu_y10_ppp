@@ -494,6 +494,11 @@ class Inputs:
         while move_type_valid == False:
             move_type = input("What move type do you want? \n Enter 1 to move a tile on your rack to the board \n Enter 2 to move a tile on the rack to a different square on the rack\n Enter 3 to move a tile on the board to a different square on the board\n Enter 4 to move a tile on the board to a position on your rack\n Enter 'S' to submit your word\n Enter 'I' to see information\n Enter 'R' to replace some tiles ")
             if move_type not in ['1','2','3','4'] and move_type.upper() not in ['S','I','R']:
+                import os
+                os.system('cls' if os.name == 'nt' else 'clear')
+                
+                game.total_board.display_board()
+                game.player_tiles.display_tiles(game.info.player_turn)
                 print("Move type invalid, please enter a valid input")
                 
             else:
@@ -502,6 +507,7 @@ class Inputs:
                         print("First word must pass over H8")
                     else:
                         print("Word invalid, cannot submit, please enter a valid input")
+                        
                 elif move_type.upper() == "I":
                     for i in range(len(game.info.player_scores)):
                         print(f"Player {i+1}'s score - {game.info.player_scores[i]}")
