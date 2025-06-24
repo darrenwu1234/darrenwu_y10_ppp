@@ -936,7 +936,7 @@ class Main:
             game.input_value.is_submit = True
 import os        
 game = Main()
-game.first_turn()
+
 os.system('cls' if os.name == 'nt' else 'clear')
 while game.game_finished == False:
     
