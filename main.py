@@ -618,7 +618,7 @@ class Inputs:
             
         else:
             print("Not a valid word")
-        
+        game.first_turn = False
 
 
     def update_board(self,origin,destination):
