@@ -157,9 +157,9 @@ class Board:
             
     def check_straight(self):
         if game.total_board.board[7][7].piece == "None":
-            self.pass_over_middle = False
+            game.user_board.pass_over_middle = False
         else:
-            self.pass_over_middle = True
+            game.user_board.pass_over_middle = True
         row_count = 0
         
         self.temp_board = []
@@ -260,7 +260,7 @@ class Board:
     def check_words(self):
         self.all_correct_words = True
         self.total_word_score = 0
-        correct = self.check_straight_second()
+        correct = game.total_board.check_straight_second()
         
         
         if correct == True:
@@ -508,7 +508,6 @@ class Inputs:
                 #elif move_type.upper() == "R":
                     
                 else:
-                    #print("reutrned")
                     move_type_valid = True
                     return move_type
                 
@@ -872,6 +871,7 @@ class Main:
         
         self.player_tiles.display_tiles(self.info.player_turn)
         while game.input_value.is_submit != True:
+            self.user_board.check_straight()
             self.user_board.perform_move()
             game.total_board.mix()
             
@@ -923,8 +923,9 @@ game = Main()
 
 
 game.first_turn()
-
+import os
+os.system('cls' if os.name == 'nt' else 'clear')
 while game.game_finished == False:
     
     game.player_turn()
-    
+    os.system('cls' if os.name == 'nt' else 'clear')
