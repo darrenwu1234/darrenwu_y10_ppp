@@ -598,8 +598,10 @@ class Inputs:
                         for tile in row:
                             if tile.piece != "None":
                                 empty_board = False
-                    if empty_board == False:
+                    if self.empty_board == False:
                         os.system('cls' if os.name == 'nt' else 'clear')
+                        game.total_board.display_board()
+                        game.player_tiles.display_tiles(self.info.player_turn)
                         print("You cannot replace your tiles while you still have tiles on the board")
                     else:
                         game.input_value.ask_replace_tiles()
@@ -897,9 +899,9 @@ class Main:
         
         #print(game.input_value.move_type)
         if game.input_value.move_type.upper() != "S":
-            
-            self.total_board.display_board()
-            self.player_tiles.display_tiles(self.info.player_turn)
+            if self.input_value.empty_board == True:
+                self.total_board.display_board()
+                self.player_tiles.display_tiles(self.info.player_turn)
         if self.first_turn == True:
             self.user_board.check_straight()
         else:
