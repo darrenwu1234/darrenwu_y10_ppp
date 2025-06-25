@@ -722,7 +722,7 @@ class Inputs:
             position = input("What space do you want to replace? (Enter an empty space to finish)")
             if position not in ['1','2','3','4','5','6','7']:
                 finished = True
-            elif position in self.replace_tile_list:
+            elif int(position) in self.replace_tile_list:
                 print("You have already inputted this position")
             else:
                 position = int(position)
