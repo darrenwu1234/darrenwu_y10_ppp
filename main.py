@@ -720,7 +720,7 @@ class Inputs:
         
         while finished == False:
             position = input("What space do you want to replace? (Enter an empty space to finish)")
-            if position not in ['1','2','3','4','5','6','7','8','9']:
+            if position not in ['1','2','3','4','5','6','7']:
                 finished = True
             else:
                 position = int(position)
@@ -888,15 +888,13 @@ class Main:
             game.user_board.pass_over_middle = False
         else:
             game.user_board.pass_over_middle = True
-        #self.total_board.display_board()
-        #self.player_tiles.display_tiles(self.info.player_turn)
-        #game.total_board.mix()
+        
         self.user_board.perform_move()
         game.total_board.mix()
         
         
         #print(game.input_value.move_type)
-        if game.input_value.move_type.upper() != "S":
+        if game.input_value.move_type.upper() != "S" and game.input_value.move_type.upper() != "R":
             
             self.total_board.display_board()
             self.player_tiles.display_tiles(self.info.player_turn)
