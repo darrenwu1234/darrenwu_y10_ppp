@@ -593,20 +593,40 @@ class Inputs:
                     self.submit(game.user_board.word_score)
                     self.submitted = True
                 elif self.move_type.upper() == "R":
-                    
-                    game.input_value.ask_replace_tiles()
-                    game.player_tiles.replace_tiles()
-                    self.submitted = True
+                    empty_board = True
+                    for row in game.user_board.board:
+                        for tile in row:
+                            if tile.piece != "None":
+                                empty_board = False
+                    if empty_board == False:
+                        os.system('cls' if os.name == 'nt' else 'clear')
+                        print("You cannot replace your tiles while you still have tiles on the board")
+                    else:
+                        game.input_value.ask_replace_tiles()
+                        game.player_tiles.replace_tiles()
+                        self.submitted = True
         
         elif self.move_type.upper() == "S":
             self.submit(game.user_board.word_score)
             self.submitted = True
         elif self.move_type.upper() == "R":
-            
-            game.input_value.ask_replace_tiles()
-            game.player_tiles.replace_tiles()
-            self.is_submit = True
-            self.submitted = True
+            empty_board = True
+            for row in game.user_board.board:
+                for tile in row:
+                    if tile.piece != "None":
+                        empty_board = False
+            if empty_board == False:
+                os.system('cls' if os.name == 'nt' else 'clear')
+                print("You cannot replace your tiles while you still have tiles on the board")
+            else:
+                game.input_value.ask_replace_tiles()
+                game.player_tiles.replace_tiles()
+                self.submitted = True
+
+    
+                game.player_tiles.replace_tiles()
+                self.is_submit = True
+                self.submitted = True
     def submit(self,word_score):
         self.is_submit = False
         if game.user_board.valid_output == True:
@@ -693,8 +713,11 @@ class Inputs:
                 print(f"Tile {tile.piece} moved from {origin} to {destination.upper()}.")
                 self.submitted = True
     def ask_replace_tiles(self):
+        
+        
         finished = False
         self.replace_tile_list = []
+        
         while finished == False:
             position = input("What space do you want to replace? (Enter an empty space to finish)")
             if position not in ['1','2','3','4','5','6','7','8','9']:
@@ -702,9 +725,7 @@ class Inputs:
             else:
                 position = int(position)
                 self.replace_tile_list.append(position)
-
-
-        
+    
         
       
         
@@ -788,10 +809,14 @@ class Tiles:
                 
         return player_tiles, tile_list
     def replace_tiles(self):
+        
+        
         for i in game.input_value.replace_tile_list:
             game.player_tiles.tile_list, random_tile = game.player_tiles.random_tile(game.player_tiles.tile_list)
             game.player_tiles.player_tiles[game.info.player_turn][i-1] = random_tile
             print(f"{random_tile.piece} drawn")
+        
+
 class Information:
     def __init__(self,player_turn = None,player_scores = None):
         if player_turn == None:
