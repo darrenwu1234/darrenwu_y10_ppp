@@ -727,7 +727,7 @@ class Inputs:
             else:
                 position = int(position)
                 self.replace_tile_list.append(position)
-    
+            print(self.replace_tile_list)
         
       
         
