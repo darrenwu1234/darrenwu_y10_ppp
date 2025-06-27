@@ -438,10 +438,13 @@ class Board:
                 if game.user_board.board[row][column].piece != "None":
                     
                     for difference in range(-1,2,2):
-                        if game.perm_board.board[row+difference][column].piece != "None":
-                            self.connected = True
-                        elif game.perm_board.board[row][column+difference].piece != "None":
-                            self.connected = True
+                        try:
+                            if game.perm_board.board[row+difference][column].piece != "None":
+                                self.connected = True
+                            elif game.perm_board.board[row][column+difference].piece != "None":
+                                self.connected = True
+                        except:
+                            pass
         if self.connected == True:                
             for row in range(len(game.user_board.board)):
                 for column in range(len(game.user_board.board[row])):
